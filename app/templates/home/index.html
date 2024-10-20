@@ -5,11 +5,44 @@
 {% endblock %}
 
 {% block content%}
-  <div class="content-index">
-    {% if g.user %}
-      <h1>Vous êtes connectés</h1>
-    {% else %}
-      <h1>Bienvenue sur le template de base de votre TM :)</h1>
-    {% endif %}
-  </div>
+        <div class="title">
+          <h1>Accueil</h1>
+        </div>
+        <div class="space">
+<!demander comment grouper et faire un for in range -->
+          <div class="photo">
+            <img src="{{url_for('static', filename='imgs/test-recette.jpg')}}" alt="Photo" id="photo-style"/>
+            <h3>test-recette</h3>
+          </div>
+          <div class="photo">
+            <img src="{{url_for('static', filename='imgs/test-recette.jpg')}}" alt="Photo" id="photo-style"/>
+            <h3>test-recette</h3>
+          </div>
+          <div class="photo">
+            <img src="{{url_for('static', filename='imgs/test-recette.jpg')}}" alt="Photo" id="photo-style"/>
+            <h3>test-recette</h3>
+          </div>
+          <div class="photo">
+            <img src="{{url_for('static', filename='imgs/test-recette.jpg')}}" alt="Photo" id="photo-style"/>
+            <h3>test-recette</h3>
+          </div>
+          <div class="photo">
+            <img src="{{url_for('static', filename='imgs/test-recette.jpg')}}" alt="Photo" id="photo-style"/>
+            <h3>test-recette</h3>
+          </div>
+          <div class="photo">
+            <img src="{{url_for('static', filename='imgs/test-recette.jpg')}}" alt="Photo" id="photo-style"/>
+            <h3>test-recette</h3>
+          </div> <div class="photo">
+            <img src="{{url_for('static', filename='imgs/test-recette.jpg')}}" alt="Photo" id="photo-style"/>
+            <h3>test-recette</h3>
+          </div>
+          <div class="photo">
+            <img src="{{url_for('static', filename='imgs/test-recette.jpg')}}" alt="Photo" id="photo-style"/>
+            <h3>test-recette</h3>
+          </div>
+          
+          
+             
+
 {% endblock %}
