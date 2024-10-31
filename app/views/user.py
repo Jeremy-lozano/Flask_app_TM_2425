@@ -1,4 +1,5 @@
 from flask import (Blueprint, flash, g, redirect, render_template, request, session, url_for)
+from app.db.db import get_db
 from app.utils import *
 
 # Routes /user/...
@@ -11,9 +12,12 @@ def button_connection():
         return render_template('user/bouton_connexion.html')
 
     
-
 @user_bp.route('/profile', methods=('GET', 'POST'))
 @login_required
 def show_profile():
-    # Affichage de la page principale de l'application
-    return render_template('user/compte.html')
+    db = get_db()
+    cursor = db.execute('SELECT nom FROM utilisateurs')
+    result = cursor.fetchone()
+    variable = result['nom'] if result else 'Valeur par défaut'
+    return render_template('user/compte.html',variable=variable)
+
