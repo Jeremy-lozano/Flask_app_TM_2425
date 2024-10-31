@@ -46,6 +46,10 @@
   /*
 -----------------   ADD YOUR CSS RULES BELOW ------------------
 */
+body{
+  font-family: "Inter Tight";
+  font-style:normal;
+}
 
 header{
     border-bottom: 3px solid #acacac; 
@@ -125,6 +129,7 @@ header{
   font-size: 20px;
 }
 
+
 #logo-right{
   width: 27px;
   height: 27px;
@@ -183,7 +188,7 @@ header{
 }
 
 #header-nav li a:hover{
-    font-weight: bold;
+    font-weight: normal;
 }
 
 #header-nav a{
@@ -229,7 +234,7 @@ header{
   border-radius: 10px;
   height: 40px;
   width: 200px;
-  font-weight: bold;
+  font-weight: normal;
   border: 1px;
   display: flex;
   align-items: center;
@@ -242,11 +247,15 @@ header{
   background-color: #262626;
   color: white;
 }
+
 .title{
   margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.title h1{
+  font-weight: normal;
 }
 .space{
   margin-top: 40px ;
