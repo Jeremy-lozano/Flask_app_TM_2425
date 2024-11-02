@@ -50,6 +50,47 @@ body{
   font-family: "Inter Tight";
   font-style: normal;
 }
+#bouton_gris{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 30px;
+  height: 35px;
+  width: 120px;
+  border-radius: 5px;
+  background-color: #d9d9d9;
+  padding: 10px;
+  text-decoration: none;
+  margin-top: 10px;
+  size: auto;
+  margin-right: 5px;
+}
+#bouton_ajouter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#img_plus{
+  height: 16px;
+  margin-left: 5px;
+  width: auto;
+}
+#bouton_gris a{
+  text-decoration: none;
+}
+#infos{
+  color: rgb(50, 50, 50);
+  border: 2px solid black;
+  border-color: #d9d9d9;
+  border-radius: 5px;
+  height: 35px;
+  width: 250px;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
+  margin-bottom: 10px;
+}
 
 header{
     border-bottom: 3px solid #acacac; 
@@ -262,8 +303,9 @@ header{
   margin-top: 50px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items:center ;
   font-weight: normal;
+
 }
 
 .space{

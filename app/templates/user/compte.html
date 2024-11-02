@@ -12,15 +12,29 @@
     <div id="infos-perso">
       <h1>Profil utilisateur</h1>
       <p>Nom</p>
-      <case>{{variable}}</case>
+      {% if g.user %}
+        <span id="infos">{{ g.user['nom'] }}</span>
       <p>Prénom</p>
+        <span id="infos">{{ g.user['prenom'] }}</span>
+      <p>Nom d'utilisateur</p>
+        <span id="infos">{{ g.user['username'] }}</span>
+      <p>E-mail</p>
+        <span id="infos">{{ g.user['email'] }}</span>
+      {% endif %}
+
+      <h1>Mes recettes</h1>
+      {% if g.user %}
+        <span id="infos">{{ g.recette['tires'] }}</span>
+        <span id="infos">{{ g.recette['titres'] }}</span>
+        <span id="infos">{{ g.recette['titres'] }}</span>
+        <span id="infos">{{ g.recette['titres'] }}</span>
+      {% endif %}
+      <h1>Mes favoris</h1>
+
+      
     </div>
   </div> 
-
-
-
-
-  <div>
-    <a href="{{ url_for('auth.logout') }}">Deconnexion</a>
+  <div id="bouton_gris">
+    <a href="{{ url_for('auth.logout') }}" style="color:#262626">Déconnexion</a>
   </div>
 {% endblock %}

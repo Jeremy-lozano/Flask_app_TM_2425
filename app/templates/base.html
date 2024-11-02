@@ -54,11 +54,11 @@
                     <img src="{{url_for('static', filename='imgs/logo-favoris.png')}}" alt="logo-favoris" id="logo-right"/>
                 </div>
                 <div class ="right-creer">
-                    <a href="#" style="color: black">Créer</a>
+                    <a href="{{ url_for('recette.show_recettes') }}" style="color: black">Créer</a>
                     <img src="{{url_for('static', filename='imgs/logo-creer.png')}}" alt="logo-creer" id="logo-right"/>
                 </div>
                 <div class ="right-compte">
-                    <a href="{{ link }}" style="color: black">Compte</a>
+                    <a href="{{ url_for('user.show_profile') }}" style="color: black">Compte</a>
                     <img src="{{url_for('static', filename='imgs/logo-compte.png')}}" alt="logo-compte" id="logo-right"/>
                 </div>
         

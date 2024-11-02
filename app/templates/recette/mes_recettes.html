@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Template de base
+{% endblock %}
+
+{% block content%}
+        <div class="title">
+          <h1>Mes créations</h1>
+          
+        </div>
+        <div id="bouton_ajouter">
+          <div id="bouton_gris">
+            <a href="{{ url_for('recette.creation') }}" style="color:#262626">Ajouter</a>
+            <img id="img_plus" src="{{url_for('static', filename='imgs/plus_button.png')}}" alt="logo"/>
+          </div>
+        </div>
+        <div class="space">
+          <!demander comment grouper et faire un for in range -->
+            <div class="photo">
+              <img src="{{url_for('static', filename='imgs/test-recette.jpg')}}" alt="Photo" id="photo-style"/>
+              <h3>test-recette</h3>
+            </div>
+            <div class="photo">
+              <img src="{{url_for('static', filename='imgs/test-recette.jpg')}}" alt="Photo" id="photo-style"/>                  <h3>test-recette</h3>
+            </div>
+            <div class="photo">
+              <img src="{{url_for('static', filename='imgs/test-recette.jpg')}}" alt="Photo" id="photo-style"/>
+              <h3>test-recette</h3>
+             </div>
+          
+          
+             
+
+{% endblock %}
