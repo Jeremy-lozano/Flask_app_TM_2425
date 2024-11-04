@@ -75,7 +75,7 @@ def login():
         # on crée une variable error 
         error = None
         if user is None:
-            error = "Nom d'utilisateur / Mot de passe incorrect"
+            error = "Nom d'utilisateur"
         elif not check_password_hash(user['password'], password):
             error = "Mot de passe incorrect"
 

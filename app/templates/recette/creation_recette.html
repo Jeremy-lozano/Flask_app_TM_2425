@@ -5,4 +5,41 @@
 {% endblock %}
 
 {% block content%}
+<div>
+  <div class="title">
+    <h1>Créations</h1>
+  </div>
+  <div id="create">
+    <div id="container-create">
+      <div>
+        <form method="post">
+          <label for="titres">Nom de la recette</label>
+          <input name="titres" required id="form"><br>
+          <label for="id_categorie">Types de recettes</label>
+          <input name="id_categorie" id="form" required><br>
+          <label for="description">Description</label>
+          <input name="description" id="form" required><br>
+          <label for="nombre_personne">Nombre de personnes pour cette recette</label>
+          <input name="nombre_personne" id="form" required><br>
+
+          <label for="nom">Liste ingrédients</label>
+          <input  name="nom" id="form" required><br>
+
+          <label for="temps_preparation">Temps de préparation</label>
+          <input  name="temps_preparation" id="form" required><br> 
+          <label for="temps_cuisson">Temps de cuisson/repos</label>
+          <input  name="temps_cuisson" id="form" required><br>
+          <label for="etapes">Etapes pour réaliser la recette</label>
+          <input name="etapes" id="form" required><br>
+          <label for="difficulte">Difficulté de la recette</label>
+          <input name="difficulte" id="form" required><br>
+          <label for="id_photo">Photo</label>
+          <input name="id_photo" id="form" required><br>
+          <input type="submit" value="Créer" id="bouton_gris"> <br>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
 {%endblock%}
