@@ -75,9 +75,9 @@ def login():
         # on crée une variable error 
         error = None
         if user is None:
-            error = "Nom d'utilisateur"
+            error = "Nom d'utilisateur / Mot de passe incorrect"
         elif not check_password_hash(user['password'], password):
-            error = "Mot de passe incorrect"
+            error = "Nom d'utilisateur / Mot de passe incorrect"
 
         # S'il n'y pas d'erreur, on ajoute l'id de l'utilisateur dans une variable de session
         # De cette manière, à chaque requête de l'utilisateur, on pourra récupérer l'id dans le cookie session

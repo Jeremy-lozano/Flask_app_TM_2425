@@ -1,10 +1,10 @@
 # Basic Flask Application for 3rd Year Gymnasium Students as part of their Maturity Project [24-25]
 
 ## Author
-Johan Jobin, Collège du Sud.
+Jérémy Lozano, Collège du Sud.
 
 ## Description
-The current directory is a basic Flask application template connected to an SQLite database, serving as a starting point for 3rd-year students at Collège du Sud as part of their Maturity Project. With pedagogical objectives in mind, and to provide a fundamental grasp of web application architecture, the project intentionally omits any Object-Relational Mapping (ORM) or data validation modules.
+Application web pour partager des recettes de cuisine en ligne
 
 ## How to run the project
 1. **Create a virtual environment**
@@ -53,12 +53,14 @@ The current directory is a basic Flask application template connected to an SQLi
      - Duplicate the *empty-config.py* file, rename it to *config.py* and modify its content according to your own configuration. 
      - Example:
          ```bash
+      
          SECRET_KEY="YOUR_SECRET_KEY"
          DATABASE="NAME_OF_THE_DATABASE_FILE.DB"
          EMAIL_HOST="SMTP_SERVER_NAME (FOR EXAMPLE smtp.office365.com)"
          EMAIL_PORT="SMTP_SERVER_PORT (FOR EXAMPLE 587)"
          EMAIL_ADDRESS="EMAIL_ADRESS_FROM_WHICH_THE_EMAIL_ARE_SENT_(NEEDS TO BE ...@outlook.com)"
          EMAIL_PASSWORD="PASSWORD"
+
          ```
   
 5. **Run the project**

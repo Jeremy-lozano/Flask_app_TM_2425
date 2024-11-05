@@ -23,12 +23,15 @@
       {% endif %}
 
       <h1>Mes recettes</h1>
-      {% if g.user %}
-        <span id="infos">{{ g.recette['tires'] }}</span>
-        <span id="infos">{{ g.recette['titres'] }}</span>
-        <span id="infos">{{ g.recette['titres'] }}</span>
-        <span id="infos">{{ g.recette['titres'] }}</span>
-      {% endif %}
+        
+      {% for recette in recettes %}
+
+        <span id="infos">{{recette.titres}}</span>
+      {%else%}
+        <span id="infos">Pas encore de recette</span>
+      {% endfor %}
+
+
       <h1>Mes favoris</h1>
 
       

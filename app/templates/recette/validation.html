@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Template de base
+{% endblock %}
+
+{% block content%}
+<div>
+  <div>
+    <div id="container">
+      <div id="validation">
+          
+          <h1>Recette crée avec succès</h1>
+          <img src="{{url_for('static', filename='imgs/logo-vu-vert.png')}}">
+          <a href="{{ url_for('recette.show_recettes') }}" id="mdp"> Retour à la page mes recettes</a>
+      </div>
+    </div>
+  </div>
+</div>
+{%endblock%}

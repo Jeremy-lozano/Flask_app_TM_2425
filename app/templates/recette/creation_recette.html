@@ -12,7 +12,7 @@
   <div id="create">
     <div id="container-create">
       <div>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
           <label for="titres">Nom de la recette</label>
           <input name="titres" required id="form"><br>
           <label for="id_categorie">Types de recettes</label>
@@ -21,10 +21,8 @@
           <input name="description" id="form" required><br>
           <label for="nombre_personne">Nombre de personnes pour cette recette</label>
           <input name="nombre_personne" id="form" required><br>
-
           <label for="nom">Liste ingrédients</label>
           <input  name="nom" id="form" required><br>
-
           <label for="temps_preparation">Temps de préparation</label>
           <input  name="temps_preparation" id="form" required><br> 
           <label for="temps_cuisson">Temps de cuisson/repos</label>
@@ -33,9 +31,15 @@
           <input name="etapes" id="form" required><br>
           <label for="difficulte">Difficulté de la recette</label>
           <input name="difficulte" id="form" required><br>
-          <label for="id_photo">Photo</label>
-          <input name="id_photo" id="form" required><br>
-          <input type="submit" value="Créer" id="bouton_gris"> <br>
+      
+      
+          <label for="file" class="custom-file-upload">
+            Ajouter une photo
+          </label>
+          <input type="file" id="file" name="file" accept="image/*" style="display: none;" onchange="previewImage(event)"><br>
+          <p id="fileName"></p>
+
+          <input type="submit" value="Valider et Créer" id="button-login"> <br>
         </form>
 
       </div>

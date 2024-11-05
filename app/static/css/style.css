@@ -55,6 +55,7 @@ body{
   align-items: center;
   justify-content: center;
   margin-left: 30px;
+  margin-bottom: 20px;
   height: 35px;
   width: 120px;
   border-radius: 5px;
@@ -407,6 +408,7 @@ header{
   width: 175px;
   height: 40px;
   border-radius: 5px;
+  margin-bottom: 20px;
   background-color: #2C2C2C;
   color: white;
 }
@@ -418,8 +420,38 @@ header{
   border-top-color: #D9D9D9;
   border-width: 1px;
   height: 35px;
+}
+
+#validation{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 100px;
 
 }
+#validation img{
+  display: flex;
+  height: 100px;
+  width: auto;
+}
+.custom-file-upload {
+  background-color: #bb5202;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+#fileName{
+  display: none;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
 
 #titre-register{
   display: flex;
