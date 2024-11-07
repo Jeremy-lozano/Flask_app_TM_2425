@@ -74,6 +74,8 @@ body{
 #container-create form{
   margin-top: 15px;
 }
+
+
 #container-create{
   display: flex;
   justify-content: center;
@@ -341,9 +343,27 @@ header{
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+}
+.photo p{
+  margin-top: 5px;
+  font-size: 20px;
+}
+#like{
+  display: flex;
+  height: 25px;
+  width: auto;
+  margin-top: 5px;
 
 }
+#titre_coeur{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}
 #photo-style{
+  border: solid 1px;
+  border-color: #767676;
   height: 200px;
   width: 300px;
   border-radius: 20px;
@@ -412,6 +432,27 @@ header{
   background-color: #2C2C2C;
   color: white;
 }
+
+/* creation recette */
+.add-button { 
+  margin-top: 10px; 
+  padding: 5px 10px; 
+  background-color: #bb5202; 
+  color: white; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer;
+}
+#nomInput{
+  display: flex;
+  justify-content: center;
+  width: 500px;
+  border-radius: 5px;
+  border-top-color: #D9D9D9;
+  border-width: 1px;
+  min-height: 35px;
+  height: auto;
+}
 #form{
   display: flex;
   justify-content: center;
@@ -419,8 +460,41 @@ header{
   border-radius: 5px;
   border-top-color: #D9D9D9;
   border-width: 1px;
+  min-height: 35px;
+  height: auto;
+}
+#nombre_personne{
+  border-radius: 5px;
+  height: 35px
+}
+#temps_preparation{
+  border-radius: 5px;
+  height: 35px
+}
+#temps_cuisson{
+  border-radius: 5px;
   height: 35px;
 }
+.button-group { 
+  display: flex; 
+  align-items: center;
+}
+input[type="number"] { 
+  width: 60px; 
+  text-align: center;
+}
+input[type="text"] { 
+  width: auto; 
+  text-align: center;
+}
+.button-group button { 
+  padding: 5px 10px;
+  margin: 5px; 
+  background-color: #bb5202; 
+  color: white; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; }
 
 #validation{
   display: flex;
@@ -435,6 +509,7 @@ header{
   height: 100px;
   width: auto;
 }
+
 .custom-file-upload {
   background-color: #bb5202;
   color: white;

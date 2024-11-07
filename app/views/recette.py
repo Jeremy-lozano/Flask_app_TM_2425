@@ -63,10 +63,13 @@ def creation():
                 id_recette = db.execute("SELECT last_insert_rowid()").fetchone()[0]
                 print(f"ID de la recette insérée : {id_recette}")
 
+        
+
                 # Si un fichier a été téléchargé, gérer l'upload et insérer l'image
                 if file and file.filename != '':
                     chemin_vers_le_fichier = upload_and_get_path(file)  # Appel à la fonction d'upload
                     print(f"Chemin vers l'image : {chemin_vers_le_fichier}")
+
                     
                     # Insérer l'image associée à la recette dans la table photo_recette
                     db.execute("INSERT INTO photo_recette (id_recette, chemin_vers_le_fichier) VALUES (?, ?)", 

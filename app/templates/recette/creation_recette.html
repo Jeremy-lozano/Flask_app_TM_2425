@@ -12,31 +12,64 @@
   <div id="create">
     <div id="container-create">
       <div>
-        <form method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" id="dynamicForm">
           <label for="titres">Nom de la recette</label>
           <input name="titres" required id="form"><br>
           <label for="id_categorie">Types de recettes</label>
-          <input name="id_categorie" id="form" required><br>
+          <select id="form" name="id_categorie">
+            <option value="aperitif">Apéritif</option>
+            <option value="entree">Entrée</option>
+            <option value="plat">Plat</option>
+            <option value="dessert">Dessert</option>
+            <option value="smoothie">Smoothie</option>
+            <option value="boisson">Boisson</option>
+          </select><br>
+
+
           <label for="description">Description</label>
-          <input name="description" id="form" required><br>
+          <textarea id="form" name="description" rows="3" cols="10" required></textarea><br>
+
           <label for="nombre_personne">Nombre de personnes pour cette recette</label>
-          <input name="nombre_personne" id="form" required><br>
-          <label for="nom">Liste ingrédients</label>
-          <input  name="nom" id="form" required><br>
+          <div class="button-group"> 
+            <button type="button" onclick="decrease_nbr_personne()">-</button> 
+            <input type="number" id="nombre_personne" name="nombre_personne" value="1" min="1" readonly> 
+            <button type="button" onclick="increase_nbr_personne()">+</button> 
+          </div> <br>
+
+
+
+          <div class="form-group">
+            <label for="nom">Ingrédients :</label>
+            <input type="text" id="nomInput" placeholder="exemple : Tomate, pressez le bouton 'Ajouter'">
+        </div>
+        <button class="add-button" type="button" onclick="addNomQuantite()">Ajouter</button><br>
+
+
+
           <label for="temps_preparation">Temps de préparation</label>
-          <input  name="temps_preparation" id="form" required><br> 
+          <div class="button-group"> 
+            <button type="button" onclick="decrease_temps_preparation()">-</button> 
+            <input type="text" id="temps_preparation" name="temps_preparation" value="15 minutes" readonly> 
+            <button type="button" onclick="increase_temps_preparation()">+</button> 
+          </div><br>
           <label for="temps_cuisson">Temps de cuisson/repos</label>
-          <input  name="temps_cuisson" id="form" required><br>
+          <div class="button-group"> 
+            <button type="button" onclick="decrease_temps_cuisson()">-</button> 
+            <input type="text" id="temps_cuisson" name="temps_cuisson" value="15 minutes" readonly> 
+            <button type="button" onclick="increase_temps_cuisson()">+</button> 
+          </div><br>
           <label for="etapes">Etapes pour réaliser la recette</label>
-          <input name="etapes" id="form" required><br>
+          <textarea id="form" placeholder="exemple : 1. 2. 3. etc" name="etapes" rows="3" cols="10" required></textarea><br>
           <label for="difficulte">Difficulté de la recette</label>
-          <input name="difficulte" id="form" required><br>
-      
-      
+          <select id="form" name="difficulte">
+            <option value="facile">Facile</option>
+            <option value="intermediaire">Intermédiaire</option>
+            <option value="difficile">Difficile</option>
+          </select><br>
           <label for="file" class="custom-file-upload">
             Ajouter une photo
           </label>
-          <input type="file" id="file" name="file" accept="image/*" style="display: none;" onchange="previewImage(event)"><br>
+          <input type="file" id="file" name="file" accept="image/*" style="display: none;" onchange="previewImage(event)" required><br>
           <p id="fileName"></p>
 
           <input type="submit" value="Valider et Créer" id="button-login"> <br>
