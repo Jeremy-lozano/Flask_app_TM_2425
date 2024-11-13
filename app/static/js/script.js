@@ -107,85 +107,61 @@ function decrease_temps_cuisson() {
 
 
 function addNomQuantite() {
-  // Sélectionner le formulaire dynamique
-  var form = document.getElementById('dynamicForm');
+  const form = $('#dynamicForm');
+  const nomValue = $('#nomInput').val();
+  const newDiv = $(`
+    <div class="form-group">
+      <label>${nomValue} :</label>
+      <input type="text" name="quantite[]" id="form"placeholder="Quantité">
+    </div>
+  `);
 
-  // Récupérer la valeur saisie dans le champ "Nom"
-  var nomValue = document.getElementById('nomInput').value;
-
-  // Créer une nouvelle div pour la nouvelle ligne de formulaire
-  var newDiv = document.createElement('div');
-  newDiv.className = 'form-group';
-
-  // Ajouter le nom saisi suivi d'un champ pour la quantité
-  newDiv.innerHTML = `<label>${nomValue} :</label> <input id='form' type="text" name="quantite[]" placeholder="Quantité">`;
-
-  //trouver le bouton ajouter
-  var addButton = form.querySelector('.add-button');
-  // Ajouter la nouvelle div au formulaire
-  form.insertBefore(newDiv, addButton);
-
-  // Réinitialiser le champ "Nom"
-  document.getElementById('nomInput').value = '';
+  form.find('.add-button').before(newDiv);
+  $('#nomInput').val('');
 }
 
-$(document).ready(function() {
-  // Gestion de l'input pour la recherche d'ingrédients
+$(function() {
   $('#nomInput').on('input', function() {
-      var query = $(this).val();  // Déclare la variable 'query' ici pour récupérer la valeur de l'input
-
-      if (query.length > 1) {  // Si l'utilisateur tape plus de 1 caractère
-          console.log("Recherche de suggestions pour :", query);
-
-          // Effectuer la requête AJAX pour récupérer les suggestions d'ingrédients
-          $.ajax({
-              url: window.location.origin + '/recette/suggestions',  // URL avec le préfixe '/recette'
-              type: 'GET',
-              data: { q: query },  // Envoie le paramètre 'q' avec la valeur de l'input
-              success: function(data) {
-                  console.log("Données reçues :", data);
-                  $('#suggestionsList').empty();  // Vide la liste des suggestions
-
-                  // Si des résultats sont trouvés, les afficher dans la liste
-                  if (data.length) {
-                      data.forEach(item => {
-                          // Ajoute chaque suggestion à la liste sous forme de div cliquable
-                          $('#suggestionsList').append(
-                              `<div class="suggestion-item" onclick="selectSuggestion(${item.id}, '${item.nom}')">${item.nom}</div>`
-                          );
-                      });
-                  }
-              },
-              error: function(xhr, status, error) {
-                  console.error("Erreur AJAX:", error);  // Si une erreur se produit
-              }
-          });
-      } else {
-          $('#suggestionsList').empty();  // Si moins de 2 caractères, on vide la liste
-      }
+    const query = $(this).val();
+    if (query.length > 1) {
+      console.log("Recherche de suggestions pour :", query);
+      $.ajax({
+        url: `${window.location.origin}/recette/suggestions`,
+        type: 'GET',
+        data: { q: query },
+        success: function(data) {
+          console.log("Données reçues :", data);
+          const suggestionsList = $('#suggestionsList').empty();
+          if (data.length) {
+            data.forEach(item => {
+              suggestionsList.append(
+                `<div class="suggestion-item" onclick="selectSuggestion(${item.id_ingredient}, '${item.nom}')">${item.nom}</div>`
+              );
+            });
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error("Erreur AJAX:", error);
+        }
+      });
+    } else {
+      $('#suggestionsList').empty();
+    }
   });
 });
 
-// Fonction qui est appelée lorsqu'une suggestion est sélectionnée
-function selectSuggestion(id, nom) {
-  $('#nomInput').val(nom);  // Place le nom de l'ingrédient dans le champ de saisie
-  $('#suggestionsList').empty();  // Vide la liste des suggestions
-
-  // Ajouter l'ingrédient sélectionné à la liste des ingrédients en bas du formulaire
-  // (Supposons que tu as une fonction `addIngredientToList` pour l'ajouter)
-  addIngredientToList(id, nom);
+function selectSuggestion(id_ingredient, nom) {
+  $('#nomInput').val(nom);
+  $('#suggestionsList').empty();
+  addIngredientToList(id_ingredient, nom);
 }
 
-// Fonction pour ajouter l'ingrédient sélectionné à la liste (ou autre logique spécifique)
-function addIngredientToList(id, nom) {
+function addIngredientToList(id_ingredient, nom) {
   const ingredientElement = `
-      <div class="ingredient-item" data-id="${id}">
-          <span>${nom}</span>
-          <input type="number" class="quantity-input" placeholder="Quantité" />
-      </div>
+    <div class="ingredient-item" data-id_ingredient="${id_ingredient}">
+      <span>${nom}</span>
+      <input type="number" class="quantity-input" name="quantite[]" placeholder="Quantité" />
+    </div>
   `;
-  $('#ingredientsList').append(ingredientElement);  // Ajoute l'élément au conteneur
+  $('#ingredientsList').append(ingredientElement);
 }
-
-
-
