@@ -1,4 +1,4 @@
-from flask import (Blueprint, flash, g, redirect, render_template, request, session, url_for)
+from flask import (Blueprint, flash, g, jsonify, redirect, render_template, request, session, url_for)
 from app.db.db import get_db, close_db
 from app.utils import *
 import os
@@ -98,5 +98,19 @@ def creation():
 def validation():
 
     return render_template('recette/validation.html')
-     
+
+@recette_bp.route('/suggestions', methods=['GET'])
+def suggestions():
+    query = request.args.get('q', '')  # Récupère la requête de recherche de l'utilisateur
+    if query:
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT id_ingredient, nom FROM ingredients WHERE nom LIKE ?", ('%' + query + '%',))
+        results = cursor.fetchall()
+        db.close()
+
+        # Convertir les résultats en une liste de dictionnaires
+        suggestions = [{'id': row['id_ingredient'], 'nom': row['nom']} for row in results]
+        return jsonify(suggestions)
+    return jsonify([])  # Retourne une liste vide si aucun résultat
 
