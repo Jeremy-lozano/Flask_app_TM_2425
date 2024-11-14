@@ -50,6 +50,198 @@ body{
   font-family: "Inter Tight";
   font-style: normal;
 }
+
+/*HEADERS*/
+header{
+  border-bottom: 3px solid #acacac; 
+  height: 25vh;
+}
+
+#header-nav{
+width: 100%;
+height: 100%;
+display: flex;
+align-items: center;
+margin-left: 20px;
+margin-right: 20px;
+}
+
+/*header middle*/
+
+#header-nav-middle{
+display: flex;  
+width: 33%;
+height: 100%;
+justify-content: end;
+align-items: center;
+flex-direction: column-reverse;
+}
+
+#barre{
+display: flex;
+flex-direction: row;
+align-items: end;
+margin-top: 5vh;
+}
+#barre div{
+margin-left: 11px;
+margin-right: 11px;
+font-size: 18px;
+color: #767676;
+display: flex;
+justify-content: end;
+align-items: center;
+}
+
+#search{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.search-box{
+position: relative;
+width: 300px;
+
+}
+.search-box input[type="text"] {
+padding: 12px;
+padding-right: 70px;
+border: 1px solid #000000;
+border-radius: 8px;
+box-sizing: border-box;
+background-color: #EDEDED;
+}
+.search-box input::placeholder {
+color: black;
+}
+.search-box .fa {
+position: absolute;
+right: 35px;
+top: 50%;
+transform: translateY(-50%);
+z-index: 1;
+}
+
+#barre a{
+  text-decoration: none;
+  color: #767676;
+  
+}
+  #barre a:hover{
+  text-decoration: underline;
+  color: #bb5202;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 3px;
+  }
+
+/*header right*/
+
+.right-acceuil, .right-favoris, .right-creer, .right-compte{
+width: 8.25%;
+display: flex;
+align-items: center;
+justify-content: space-evenly;
+flex-direction: column-reverse;
+font-size: 20px;
+}
+.right-acceuil a, .right-favoris a, .right-creer a, .right-compte a{
+color: #000000;
+text-decoration: none;
+}
+
+.right-acceuil a:hover, .right-favoris a:hover, .right-creer a:hover, .right-compte a:hover{
+color: #bb5202;
+text-decoration: solid;
+font-weight: 500;
+}
+
+
+#logo-right{
+width: 27px;
+height: 27px;
+display: flex;
+justify-content: center;
+
+}
+
+/*header left*/
+#header-nav-left{
+width: 33%;
+display: flex;
+align-items: center;
+flex-direction: row;
+}
+#titre{
+display: flex;
+font-size: 30px;
+width: auto;
+font-weight: normal;
+}
+
+#header-nav-logo{
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+#header-nav-logo>a{
+  height: 100px;
+  width:100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#header-nav-logo img{
+  width: 100%;
+}
+
+#header-nav>ul{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 100px;
+}
+
+/*BUTTONS*/
+#button-login{
+  width: 175px;
+  height: 40px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  border: none;
+  background-color: #bb5202;
+  color: white;
+}
+#bouton_ajouter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#bouton_gris a{
+  text-decoration: none;
+  color: white;
+}
+.bouton{
+  height: 30ch;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bouton button{
+  margin-right: 10px;
+  margin-left: 10px;
+  border-radius: 10px;
+  height: 40px;
+  width: 200px;
+  font-weight: normal;
+  border: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 #bouton_gris{
   display: flex;
   align-items: center;
@@ -58,13 +250,44 @@ body{
   height: 35px;
   width: 120px;
   border-radius: 5px;
-  background-color: #d9d9d9;
+  background-color: #bb5202;
+  color: white;
   padding: 10px;
-  text-decoration: none;
   margin-top: 10px;
-  size: auto;
-  margin-right: 5px;
+  margin-left: 25px;
 }
+
+/*main container*/
+
+
+#main-content{
+  min-height: 700px;
+  height: auto;
+  display: flex;
+  background-color: #EDEDED;
+}
+
+.container-rectangle{
+  width: 100%;
+  min-height: 700px;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 75px;
+}
+.container-menu{
+  margin-top: 100px;
+  background-color: white;
+  border-radius: 20px;
+  width: 700px;
+  min-height: 80ch;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/*creation recette*/
 #create{
   display: flex;
   justify-content: center;
@@ -96,18 +319,19 @@ body{
   height: auto;
   width: 550px;
 }
-#bouton_ajouter{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 #img_plus{
   height: 16px;
   margin-left: 5px;
   width: auto;
 }
-#bouton_gris a{
-  text-decoration: none;
+
+/*utilisateur*/
+#block-content{
+  font-size: 14px;
+  margin-top: 30px;
+  margin-left: 30px;
+  display: flex;
 }
 #infos{
   color: rgb(50, 50, 50);
@@ -122,223 +346,20 @@ body{
   margin-left: 30px;
   margin-bottom: 10px;
 }
-
-header{
-    border-bottom: 3px solid #acacac; 
-    height: 28vh;
-    
-}
-
-#header-nav{
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-
-#header-nav-middle{
-  display: flex;
-  width: 33%;
-  height: 100%;
-  justify-content: end;
-  align-items: center;
-  flex-direction: column-reverse;
-}
-
-#barre{
-  display: flex;
-  flex-direction: row;
-  align-items: end;
-  margin-top: 45px;
-}
-#barre div{
-  margin-left: 11px;
-  margin-right: 11px;
-  font-size: 18px;
-  color: #767676;
-  display: flex;
-  justify-content: end;
-  align-items: center;
-}
-
-#search{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.search-box{
-  position: relative;
-  width: 300px;
-  
-}
-.search-box input[type="text"] {
-  padding: 12px;
-  padding-right: 70px;
-  border: 1px solid #000000;
-  border-radius: 8px;
-  box-sizing: border-box;
-  background-color: #EDEDED;
-}
-.search-box input::placeholder {
-  color: black;
-}
-.search-box .fa {
-  position: absolute;
-  right: 35px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
-}
-
-.right-acceuil, .right-favoris, .right-creer, .right-compte{
-  width: 8.25%;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  flex-direction: column-reverse;
-  font-size: 20px;
-}
-
-
-#logo-right{
-  width: 27px;
-  height: 27px;
-  display: flex;
-  justify-content: center;
-
-}
-#option{
-  display: flex;
-  flex-direction: row;
-}
-
-#header-nav-left{
-  width: 33%;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-}
-#titre{
-  display: flex;
-  font-size: 30px;
-  width: auto;
-}
-
-#header-nav-logo{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-
-}
-
-#header-nav-logo>a{
-
-    height: 100px;
-    width:100px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#header-nav-logo img{
-    width: 100%;
-}
-
-#header-nav-menu{
-    width: 80%;
-}
-
-#header-nav>ul{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 100px;
-}
-
-#header-nav li a:hover{
-    font-weight: normal;
-}
-
-#header-nav a{
-    color: #797a7a;
-    text-decoration: none;
-}
-
-#main-content{
-  min-height: 700px;
-  height: auto;
-  display: flex;
-  background-color: #EDEDED;
-}
-
-.container-rectangle{
-  width: 100%;
-  min-height: 700px;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 75px;
-}
-.container-menu{
-  margin-top: 100px;
-  background-color: white;
-  border-radius: 20px;
-  width: 700px;
-  min-height: 80ch;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-}
-.bouton{
-  height: 30ch;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.bouton button{
-  margin-right: 10px;
-  margin-left: 10px;
-  border-radius: 10px;
-  height: 40px;
-  width: 200px;
-  font-weight: normal;
-  border: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#button1{
-  background-color: #D9D9D9;
-}
-#button2{
-  background-color: #262626;
-  color: white;
-}
-#block-content{
-  font-size: 14px;
-  margin-top: 30px;
-  margin-left: 30px;
-  display: flex;
-}
 #infos-perso p{
   margin-left: 30px;
   display: flex;
   flex-direction: column;
 }
+
+/*afficher recette*/
 .title{
   margin-top: 50px;
   display: flex;
   justify-content: center;
   align-items:center ;
   font-weight: normal;
-
 }
-
 .space{
   margin-top: 40px ;
   display: flex;
@@ -361,7 +382,6 @@ header{
   height: 25px;
   width: auto;
   margin-top: 5px;
-
 }
 #titre_coeur{
   display: flex;
@@ -376,6 +396,8 @@ header{
   width: 300px;
   border-radius: 20px;
 }
+
+/*footers*/
 
 #footer-nav {
     background-color: white;
@@ -392,6 +414,7 @@ header{
   color: black;
 }
 
+/*content*/
 .content-index, .content-404, .content-profile{
     min-height: 700px;
     height: auto;
@@ -432,14 +455,7 @@ header{
   font-size: 17px;
 }
 
-#button-login{
-  width: 175px;
-  height: 40px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  background-color: #2C2C2C;
-  color: white;
-}
+
 
 /* creation recette */
 .add-button { 
@@ -493,7 +509,7 @@ input[type="number"] {
 }
 input[type="text"] { 
   width: auto; 
-  text-align: center;
+  padding-left: 5px;
 }
 .button-group button { 
   padding: 5px 10px;

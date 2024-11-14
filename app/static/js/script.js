@@ -116,7 +116,7 @@ function addNomQuantite() {
     </div>
   `);
 
-  form.find('.add-button').before(newDiv);
+  form.find('.add-button').after(newDiv);
   $('#nomInput').val('');
 }
 

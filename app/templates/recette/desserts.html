@@ -6,19 +6,16 @@
 
 {% block content%}
         <div>
-          <h1 class="title">Mes créations</h1>
-        </div>
-        <div id="bouton_ajouter">
-          <div id="bouton_gris">
-            <a href="{{ url_for('recette.creation') }}">Ajouter</a>
-            <img id="img_plus" src="{{url_for('static', filename='imgs/plus_button.png')}}" alt="logo"/>
-          </div>
+          <h1 class="title">Desserts</h1>
         </div>
         <div class="space">
           {% for recette in recettes %}
             <div class="photo">
               <img src="{{ url_for('static', filename='imgs/photo_recette/' ~ recette.chemin_vers_le_fichier | safe) }}" id="photo-style">
-              <p>{{recette.titres}}</p>
+              <div id="titre_coeur">
+                <p>{{recette.titres}} </p>
+                <img src="{{url_for('static', filename='imgs/logo-favoris.png')}}" alt="logo-favoris" id="like">
+              </div>
             </div>
           {% else %}
             <p>Aucune recette disponible.</p>

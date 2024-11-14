@@ -20,18 +20,29 @@
                 </div>
             
                 <div>
-                    <h2 id="titre">Cook & Smile</h2>
+                    <h1 id="titre">Cook & Smile</h1>
                 </div>
             </div>
             <div id ="header-nav-middle">
                 <div id="barre">
-                    <div>Populaires</div>
-                    <div>Apéritifs</div>
-                    <div>Entrées</div>
-                    <div>Plats</div>
-                    <div>Desserts</div>
-                    <div>Smoothies</div>
-                    <div>Boissons</div>
+                    <div>
+                        <a href="{{ url_for('recette.show_aperitifs') }}">Apéritifs</a>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('recette.show_entrees') }}">Entrées</a>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('recette.show_plats') }}">Plats</a>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('recette.show_desserts') }}">Desserts</a>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('recette.show_smoothies') }}">Smoothies</a>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('recette.show_boissons') }}">Boissons</a>
+                    </div>
                 </div>
                 <div id="search">
                     <div class="search-container">
@@ -46,20 +57,20 @@
                 </div>
             </div>
                 <div class ="right-acceuil">
-                    <a href="{{ url_for('home.landing_page') }}" style="color: black">Accueil</a>
+                    <a href="{{ url_for('home.landing_page') }}">Accueil</a>
                     <img src="{{url_for('static', filename='imgs/logo-acceuil.png')}}" alt="logo-acceuil" id="logo-right"/>
                 </div>
                 
                 <div class ="right-favoris">
-                    <a href="#" style="color: black">Favoris</a>
+                    <a href="#" >Favoris</a>
                     <img src="{{url_for('static', filename='imgs/logo-favoris.png')}}" alt="logo-favoris" id="logo-right"/>
                 </div>
                 <div class ="right-creer">
-                    <a href="{{ url_for('recette.show_recettes') }}" style="color: black">Créer</a>
+                    <a href="{{ url_for('recette.show_recettes') }}">Créer</a>
                     <img src="{{url_for('static', filename='imgs/logo-creer.png')}}" alt="logo-creer" id="logo-right"/>
                 </div>
                 <div class ="right-compte">
-                    <a href="{{ url_for('user.show_profile') }}" style="color: black">Compte</a>
+                    <a href="{{ url_for('user.show_profile') }}">Compte</a>
                     <img src="{{url_for('static', filename='imgs/logo-compte.png')}}" alt="logo-compte" id="logo-right"/>
                 </div>
         
