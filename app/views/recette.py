@@ -46,10 +46,11 @@ def creation():
         difficulte = request.form['difficulte']
         id_utilisateur = session.get('user_id')
 
-
-
         # Récupérer le fichier téléchargé
         file = request.files.get('file')
+
+        id_ingredients = request.form.getlist('id_ingredient[]')  # Liste des ID des ingrédients
+        quantites = request.form.getlist('quantite[]')  # Liste des quantités
 
         # On récupère la base de données
         db = get_db()
@@ -60,6 +61,8 @@ def creation():
                 # Insérer la recette dans la base de données
                 cursor = db.execute("SELECT id_categorie FROM categories WHERE nom_categorie = ?", (nom_categorie,)) 
                 result = cursor.fetchone()
+
+
                 if result: 
                     id_categorie = result[0]
 
@@ -69,6 +72,13 @@ def creation():
                     # Récupérer l'ID de la recette nouvellement insérée
                     id_recette = db.execute("SELECT last_insert_rowid()").fetchone()[0]
                     print(f"ID de la recette insérée : {id_recette}")
+
+
+                    for id_ingredient, quantite in zip(id_ingredients, quantites):
+                        if id_ingredient and quantite:
+                            db.execute("INSERT INTO utilise (id_recette, id_ingredient, quantite) VALUES (?, ?, ?)", 
+                                       (id_recette, id_ingredient, quantite))
+                            print(f"Ingrédient {id_ingredient} avec quantité {quantite} ajouté à la recette {id_recette}")
 
             
 
@@ -118,9 +128,8 @@ def suggestions():
         cursor.execute("SELECT id_ingredient, nom FROM ingredients WHERE nom LIKE ?", ('%' + query + '%',))
         results = cursor.fetchall()
         db.close()
-
         # Convertir les résultats en une liste de dictionnaires
-        suggestions = [{'id': row['id_ingredient'], 'nom': row['nom']} for row in results]
+        suggestions = [{'id_ingredient': row['id_ingredient'], 'nom': row['nom']} for row in results]
         return jsonify(suggestions)
     return jsonify([])  # Retourne une liste vide si aucun résultat
 
@@ -250,3 +259,56 @@ def show_boissons():
 
     return render_template('recette/boissons.html', recettes=recettes_traitees)
 
+
+@recette_bp.route('/<titres>', methods=['GET', 'POST'])
+def detail_recette(titres):
+    db = get_db()
+
+    # Requête pour récupérer toutes les informations de la recette, les photos, les ingrédients et le username de l'utilisateur
+    cursor = db.execute('''
+        SELECT r.id_recette, r.titres, r.description, r.nombre_personne, r.temps_preparation, 
+               r.temps_cuisson, r.etapes, r.difficulte, p.chemin_vers_le_fichier, 
+               ri.id_ingredient, ri.quantite, i.nom AS ingredient_nom,
+               u.username, u.prenom
+        FROM recettes r
+        LEFT JOIN photo_recette p ON r.id_recette = p.id_recette
+        LEFT JOIN utilise ri ON r.id_recette = ri.id_recette
+        LEFT JOIN ingredients i ON ri.id_ingredient = i.id_ingredient
+        LEFT JOIN utilisateurs u ON r.id_utilisateur = u.id_utilisateur 
+        WHERE r.titres = ?
+    ''', (titres,))
+
+    # Traiter les résultats
+    recette = cursor.fetchall()
+
+    # Vérifier si des résultats ont été trouvés
+    if recette:
+        # Initialisation des variables pour la recette et les ingrédients
+        recette_data = {
+            'titres': recette[0]['titres'],
+            'description': recette[0]['description'],
+            'nombre_personne': recette[0]['nombre_personne'],
+            'temps_preparation': recette[0]['temps_preparation'],
+            'temps_cuisson': recette[0]['temps_cuisson'],
+            'etapes': recette[0]['etapes'],
+            'difficulte': recette[0]['difficulte'],
+            'chemin_vers_le_fichier': os.path.basename(recette[0]['chemin_vers_le_fichier']) if recette[0]['chemin_vers_le_fichier'] else None,
+            'username': recette[0]['username'],   # Ajouter le username de l'utilisateur
+            'ingredients': []
+        }
+
+        # Extraire tous les ingrédients associés à la recette
+        for row in recette:
+            if row['ingredient_nom']:
+                recette_data['ingredients'].append({
+                    'ingredient_nom': row['ingredient_nom'],
+                    'quantite': row['quantite']
+                })
+
+        # Passer les données de la recette et des ingrédients au template
+        return render_template('recette/recette_detail.html', recette=recette_data)
+
+    else:
+        # Si aucune recette n'est trouvée
+        flash('Recette non trouvée.')
+        return redirect(url_for('home.index'))

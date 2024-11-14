@@ -247,6 +247,7 @@ align-items: center;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+  margin-left: 30px;
   height: 35px;
   width: 120px;
   border-radius: 5px;
@@ -254,14 +255,13 @@ align-items: center;
   color: white;
   padding: 10px;
   margin-top: 10px;
-  margin-left: 25px;
 }
 
 /*main container*/
 
 
 #main-content{
-  min-height: 700px;
+  min-height: 600px;
   height: auto;
   display: flex;
   background-color: #EDEDED;
@@ -281,7 +281,7 @@ align-items: center;
   background-color: white;
   border-radius: 20px;
   width: 700px;
-  min-height: 80ch;
+  min-height: 500px;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -298,7 +298,7 @@ align-items: center;
 }
 
 #suggestionsList {
-  border: 1px solid #ddd;
+  
   max-height: 100px;
   overflow-y: auto;
   background-color: #fff;
@@ -354,7 +354,11 @@ align-items: center;
 
 /*afficher recette*/
 .title{
+  
+  left: 50%; 
+  transform: translateX(25); 
   margin-top: 50px;
+
   display: flex;
   justify-content: center;
   align-items:center ;
@@ -416,7 +420,7 @@ align-items: center;
 
 /*content*/
 .content-index, .content-404, .content-profile{
-    min-height: 700px;
+    min-height: 500px;
     height: auto;
     display: flex;
     align-items: center;
@@ -472,6 +476,16 @@ align-items: center;
   justify-content: center;
   width: 500px;
   border-radius: 5px;
+  margin-bottom: 10px;
+  border-width: 1px;
+  min-height: 35px;
+  height: auto;
+}
+.quantity-input{
+  display: flex;
+  justify-content: center;
+  width: 500px;
+  border-radius: 5px;
   border-top-color: #D9D9D9;
   border-width: 1px;
   min-height: 35px;
@@ -508,7 +522,6 @@ input[type="number"] {
   text-align: center;
 }
 input[type="text"] { 
-  width: auto; 
   padding-left: 5px;
 }
 .button-group button { 
@@ -533,7 +546,16 @@ input[type="text"] {
   height: 100px;
   width: auto;
 }
+.space a{
+  text-decoration: none;
+  color: #000000;
+}
 
+.space a:hover {
+  text-decoration: solid;
+  color: #bb5202;
+  font-weight: 500;
+}
 .custom-file-upload {
   background-color: #bb5202;
   color: white;
@@ -562,5 +584,71 @@ input[type="text"] {
   flex-direction: column;
 }
 
+
+/* voir la recette */
+#top {
+  display: flex;
+  justify-content: space-between; /* Espace entre les éléments */
+  align-items: center;  /* Alignement vertical centré */
+  position: relative;  /* Nécessaire pour utiliser position: absolute sur le titre */
+  width: 100%; /* Assurer que le div prend toute la largeur disponible */
+  padding-left: 30px;
+  padding-top: 50px;
+  padding-right: 30px;
+}
+
+#photo-big{
+  border: solid 1px;
+  border-color: #767676;
+  height: 350px;
+  width: 500px;
+  border-radius: 20px;
+}
+
+.photo-big{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infos-recette{
+  font-weight: normal;
+  margin-left: 30px;
+  font-size: 24px;
+}
+#infos-recette p{
+  margin-left: 60px;
+  margin-right: 60px;
+  font-size: 18px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+#difficulte{
+  width: 90px;
+  height: auto;
+}
+
+
+#favoris {
+  width: 35px; 
+  height: auto;
+}
+
+#top h1{
+  position: absolute; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  margin: 0;
+
+}
+
+
+
+#createur{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 

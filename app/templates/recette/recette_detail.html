@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Template de base
+{% endblock %}
+
+{% block content%}
+<div id="top">
+  {% if recette.difficulte == "facile" %}
+    <img src="{{url_for('static', filename='imgs/facile.png')}}" alt="facile" id="difficulte">
+  {% elif recette.difficulte == "intermediaire" %}
+    <img src="{{url_for('static', filename='imgs/intermediaire.png')}}" alt="intermediaire" id="difficulte">
+  {% elif recette.difficulte == "difficile" %}
+    <img src="{{url_for('static', filename='imgs/difficile.png')}}" alt="difficile" id="difficulte"> 
+  {% else %}
+    <p>Difficulté inconnue.</p>
+  {% endif %}
+  <h1 class="title">{{recette.titres}}</h1>
+  <img src="{{url_for('static', filename='imgs/logo-favoris.png')}}" alt="logo-favoris" id="favoris">
+  
+</div>
+<div id="createur">
+  <p>Crée par "{{recette.username}}" </p>
+</div><br>
+<div class="photo-big">
+  <img src="{{ url_for('static', filename='imgs/photo_recette/' + recette.chemin_vers_le_fichier) }}" id="photo-big">
+</div><br>
+<div id="infos-recette">
+  <h1 class="infos-recette">Description</h1>
+  <p>{{recette.description}}</p><br>
+  <h1 class="infos-recette">Liste des ingrédients pour {{recette.nombre_personne}} personnes : </h1>
+    {% for ingredient in recette.ingredients %}
+        <p><strong>{{ ingredient.ingredient_nom }}:</strong> {{ ingredient.quantite }}</p>
+    {% endfor %}
+    <br>
+  <p><strong>Temps de préparation : </strong>{{recette.temps_preparation}}</p>
+  <p><strong>Temps de cuisson/repos : </strong>{{recette.temps_cuisson}}</p><br>
+  <h1 class="infos-recette">Suivez ces étapes :</h1>
+  <p>{{recette.etapes}}</p>
+  <h1 class="title">Bonne dégustation, {{g.user['prenom']}}!</h1>
+</div><br>
+
+        
+          
+          
+             
+
+{% endblock %}

@@ -105,34 +105,42 @@ function decrease_temps_cuisson() {
 }
 
 
-
-function addNomQuantite() {
+function addNomQuantite(id_ingredient, nom) {
   const form = $('#dynamicForm');
-  const nomValue = $('#nomInput').val();
   const newDiv = $(`
     <div class="form-group">
-      <label>${nomValue} :</label>
-      <input type="text" name="quantite[]" id="form"placeholder="Quantité">
+      <label>${nom} :</label>
+      <input type="text" name="quantite[]" placeholder="Quantité">
+      <input type="hidden" name="id_ingredient[]" value="${id_ingredient}">
     </div>
   `);
 
+  // Ajouter le nouveau div pour l'ingrédient avec sa quantité
   form.find('.add-button').after(newDiv);
+  console.log("Nouvel ingrédient ajouté avec quantité :", {
+    nom: nom,
+    id_ingredient: id_ingredient
+  });
+
+  // Vider la barre de recherche après ajout de l'ingrédient
   $('#nomInput').val('');
 }
 
 $(function() {
+  // Quand l'utilisateur tape dans la barre de recherche
   $('#nomInput').on('input', function() {
-    const query = $(this).val();
+    const query = $(this).val(); // Valeur de la barre de recherche
     if (query.length > 1) {
       console.log("Recherche de suggestions pour :", query);
       $.ajax({
-        url: `${window.location.origin}/recette/suggestions`,
+        url: `${window.location.origin}/recette/suggestions`, // URL pour récupérer les suggestions
         type: 'GET',
         data: { q: query },
         success: function(data) {
           console.log("Données reçues :", data);
-          const suggestionsList = $('#suggestionsList').empty();
+          const suggestionsList = $('#suggestionsList').empty(); // Vider la liste des suggestions
           if (data.length) {
+            // Ajouter chaque suggestion à la liste
             data.forEach(item => {
               suggestionsList.append(
                 `<div class="suggestion-item" onclick="selectSuggestion(${item.id_ingredient}, '${item.nom}')">${item.nom}</div>`
@@ -145,23 +153,44 @@ $(function() {
         }
       });
     } else {
-      $('#suggestionsList').empty();
+      $('#suggestionsList').empty(); // Si la barre de recherche est vide, vider la liste des suggestions
     }
   });
 });
 
 function selectSuggestion(id_ingredient, nom) {
+  // Mettre le nom de l'ingrédient dans la barre de recherche
   $('#nomInput').val(nom);
+  
+  // Vider la liste des suggestions dès que l'on sélectionne un ingrédient
   $('#suggestionsList').empty();
+
+  console.log("Suggestion sélectionnée :", {
+    id_ingredient: id_ingredient,
+    nom: nom
+  });
+
+  // Ajouter l'ingrédient à la liste
   addIngredientToList(id_ingredient, nom);
 }
 
 function addIngredientToList(id_ingredient, nom) {
+  // Créer un élément d'ingrédient avec un champ pour la quantité
   const ingredientElement = `
     <div class="ingredient-item" data-id_ingredient="${id_ingredient}">
       <span>${nom}</span>
-      <input type="number" class="quantity-input" name="quantite[]" placeholder="Quantité" />
+      <input type="text" class="quantity-input" name="quantite[]" placeholder="Quantité">
+      <input type="hidden" name="id_ingredient[]" value="${id_ingredient}">
     </div>
   `;
+  
+  // Ajouter l'élément à la liste des ingrédients
   $('#ingredientsList').append(ingredientElement);
+  console.log("Ingrédient ajouté à la liste :", {
+    id_ingredient: id_ingredient,
+    nom: nom
+  });
+
+  // Après avoir ajouté l'ingrédient, vider la barre de recherche pour un nouvel ajout
+  $('#nomInput').val('');
 }
