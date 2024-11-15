@@ -5,10 +5,14 @@ from app.db.db import get_db, close_db
 home_bp = Blueprint('home', __name__)
 
 
-
 # Route /
 @home_bp.route('/', methods=['GET', 'POST'])
 def landing_page():
+    if request.method == "POST":
+        # On récupère la recherche de l'utilisateur
+        recherche = request.form["search"]
+        # Redirection vers la page de résultats avec la recherche comme paramètre
+        return redirect(url_for("recette.resultat", recherche=recherche))
     db = get_db()
 
     # Requête pour récupérer les titres des recettes et les chemins des photos

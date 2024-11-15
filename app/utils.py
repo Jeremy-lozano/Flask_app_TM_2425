@@ -40,10 +40,6 @@ def upload_and_get_path(file):
     file.save(file_path)
     return file_path
 
-def upload_and_get_name(nom):
-
-    return nom
-
 
 
 

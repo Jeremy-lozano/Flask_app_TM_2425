@@ -35,7 +35,6 @@ def show_recettes():
 @login_required
 def creation():
     if request.method == 'POST':
-
         titres = request.form['titres']
         nom_categorie = request.form['nom_categorie']
         description = request.form['description']
@@ -55,43 +54,54 @@ def creation():
         # On récupère la base de données
         db = get_db()
 
+        print("Données du formulaire :", {
+            "id_utilisateur": id_utilisateur,
+            "titres": titres,
+            "nom_categorie": nom_categorie,
+            "description": description,
+            "nombre_personne": nombre_personne,
+            "temps_preparation": temps_preparation,
+            "temps_cuisson": temps_cuisson,
+            "etapes": etapes,
+            "difficulte": difficulte,
+            "id_ingredients": id_ingredients,
+            "quantites": quantites,
+            "file": file
+        })  # Log des données reçues
+
         # Vérifier que tous les champs nécessaires sont remplis
         if id_utilisateur and titres and description and nombre_personne and temps_preparation and temps_cuisson and etapes and difficulte:
             try:
                 # Insérer la recette dans la base de données
-                cursor = db.execute("SELECT id_categorie FROM categories WHERE nom_categorie = ?", (nom_categorie,)) 
+                cursor = db.execute("SELECT id_categorie FROM categories WHERE nom_categorie = ?", (nom_categorie,))
                 result = cursor.fetchone()
+                print("Résultat de la requête de catégorie :", result)  # Log du résultat de la requête
 
-
-                if result: 
+                if result:
                     id_categorie = result[0]
 
-                    db.execute("INSERT INTO recettes (id_utilisateur, titres, id_categorie, description, nombre_personne, temps_preparation, temps_cuisson, etapes, difficulte) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", 
-                            (id_utilisateur, titres, id_categorie, description, nombre_personne, temps_preparation, temps_cuisson, etapes, difficulte))
-                    
+                    db.execute("INSERT INTO recettes (id_utilisateur, titres, id_categorie, description, nombre_personne, temps_preparation, temps_cuisson, etapes, difficulte) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                               (id_utilisateur, titres, id_categorie, description, nombre_personne, temps_preparation, temps_cuisson, etapes, difficulte))
+
                     # Récupérer l'ID de la recette nouvellement insérée
                     id_recette = db.execute("SELECT last_insert_rowid()").fetchone()[0]
                     print(f"ID de la recette insérée : {id_recette}")
 
-
                     for id_ingredient, quantite in zip(id_ingredients, quantites):
                         if id_ingredient and quantite:
-                            db.execute("INSERT INTO utilise (id_recette, id_ingredient, quantite) VALUES (?, ?, ?)", 
+                            db.execute("INSERT INTO utilise (id_recette, id_ingredient, quantite) VALUES (?, ?, ?)",
                                        (id_recette, id_ingredient, quantite))
                             print(f"Ingrédient {id_ingredient} avec quantité {quantite} ajouté à la recette {id_recette}")
-
-            
 
                     # Si un fichier a été téléchargé, gérer l'upload et insérer l'image
                     if file and file.filename != '':
                         chemin_vers_le_fichier = upload_and_get_path(file)  # Appel à la fonction d'upload
                         print(f"Chemin vers l'image : {chemin_vers_le_fichier}")
 
-                        
                         # Insérer l'image associée à la recette dans la table photo_recette
-                        db.execute("INSERT INTO photo_recette (id_recette, chemin_vers_le_fichier) VALUES (?, ?)", 
-                                (id_recette, chemin_vers_le_fichier))
-                    
+                        db.execute("INSERT INTO photo_recette (id_recette, chemin_vers_le_fichier) VALUES (?, ?)",
+                                   (id_recette, chemin_vers_le_fichier))
+
                     # Valider les changements dans la base de données
                     db.commit()
 
@@ -99,18 +109,17 @@ def creation():
                     print(f"Recette : {titres} ajoutée avec succès")
 
                     return redirect(url_for('recette.validation'))
-                else: 
-                    flash('Catégorie non trouvée.') 
-                    return render_template('recette/creation_recette.html')
-
             except Exception as e:
                 db.rollback()  # Annuler la transaction en cas d'erreur
+                print(f"Erreur lors de la création de la recette : {e}")  # Log de l'exception
+                flash(f"Erreur lors de la création de la recette : {str(e)}")
                 return redirect(url_for('recette.creation'))
         else:
             flash('Tous les champs sont obligatoires.')
             return render_template('recette/creation_recette.html')
 
     return render_template('recette/creation_recette.html')
+
 
 
 @recette_bp.route('/validation', methods=['GET', 'POST'])
@@ -312,3 +321,40 @@ def detail_recette(titres):
         # Si aucune recette n'est trouvée
         flash('Recette non trouvée.')
         return redirect(url_for('home.index'))
+    
+
+@recette_bp.route("/resultat/<recherche>")
+def resultat(recherche):
+    db = get_db()
+    
+    # Requête SQL pour récupérer les recettes contenant le terme recherché dans le titre
+    cursor = db.execute('''
+        SELECT r.id_recette, r.titres, p.chemin_vers_le_fichier, p.id_recette
+        FROM recettes r
+        LEFT JOIN photo_recette p ON r.id_recette = p.id_recette
+        WHERE r.titres LIKE ?
+    ''', (f'%{recherche}%',))  # Utilisation de LIKE pour rechercher dans le titre
+    recettes = cursor.fetchall()
+    db.close()
+    
+    # Traiter les chemins pour qu'ils soient relatifs
+    recettes_traitees = []
+    for recette in recettes:
+        chemin_complet = recette['chemin_vers_le_fichier']
+        if chemin_complet:  # Vérifier si le chemin est défini
+            chemin_relatif = os.path.basename(chemin_complet)  # Récupérer uniquement le nom de fichier
+            chemin_final = f"{chemin_relatif}"
+        else:
+            chemin_final = None  # Pas de chemin d'image disponible
+        recettes_traitees.append({
+            'id_recette': recette['id_recette'],
+            'titres': recette['titres'],
+            'chemin_vers_le_fichier': chemin_final
+        })
+    
+    # Affiche la recherche de l'utilisateur en tant que titre
+    return render_template(
+        "recette/resultats_recherche.html",
+        recherche=recherche,
+        recettes=recettes_traitees
+    )
