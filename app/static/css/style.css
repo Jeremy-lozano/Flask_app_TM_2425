@@ -224,6 +224,10 @@ align-items: center;
   text-decoration: none;
   color: white;
 }
+#bouton_logout a{
+  text-decoration: none;
+  color: white;
+}
 .bouton{
   height: 30ch;
   display: flex;
@@ -242,12 +246,26 @@ align-items: center;
   align-items: center;
   justify-content: center;
 }
+#bouton_logout{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  margin-left: 35px;
+  height: 35px;
+  width: 120px;
+  border-radius: 5px;
+  background-color: #bb5202;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+}
+
 #bouton_gris{
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  margin-left: 30px;
   height: 35px;
   width: 120px;
   border-radius: 5px;

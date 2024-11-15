@@ -14,21 +14,30 @@ def show_recettes():
     db = get_db()
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
-    cursor = db.execute('SELECT r.titres, p.chemin_vers_le_fichier FROM recettes r JOIN photo_recette p ON r.id_recette = p.id_recette WHERE id_utilisateur = ?', (user_id,))
+    cursor = db.execute('SELECT r.titres, p.chemin_vers_le_fichier '
+                        'FROM recettes r '
+                        'JOIN photo_recette p ON r.id_recette = p.id_recette '
+                        'WHERE id_utilisateur = ?', (user_id,))
 
     recettes = cursor.fetchall()
     db.close()
 
-    # Traiter les résultats pour obtenir uniquement le nom de fichier
+    # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom de fichier
-        recettes_traitees.append({'titres': recette['titres'], 'chemin_vers_le_fichier': nom_fichier})
+        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
 
+        # Convertir le chemin en utilisant des barres obliques normales (i.e. '/')
+        chemin_relatif = os.path.normpath(os.path.join('imgs', 'photo_recette', nom_fichier)).replace(os.sep, '/')
+
+        # Ajouter à la liste des recettes traitées
+        recettes_traitees.append({
+            'titres': recette['titres'],
+            'chemin_vers_le_fichier': chemin_relatif
+        })
 
     return render_template('recette/mes_recettes.html', link=url_for('user.show_profile'), recettes=recettes_traitees)
-
 
 
 @recette_bp.route('/creation', methods=['GET', 'POST'])
@@ -141,26 +150,41 @@ def suggestions():
         suggestions = [{'id_ingredient': row['id_ingredient'], 'nom': row['nom']} for row in results]
         return jsonify(suggestions)
     return jsonify([])  # Retourne une liste vide si aucun résultat
-
 @recette_bp.route('/aperitifs', methods=['GET', 'POST'])
 def show_aperitifs():
     db = get_db()
-    id_categorie = 1
+    id_categorie = 1  # ID de la catégorie "Apéritifs"
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
-    cursor = db.execute('SELECT r.titres, p.chemin_vers_le_fichier FROM recettes r JOIN photo_recette p ON r.id_recette = p.id_recette WHERE id_categorie = ?', (id_categorie,))
+    cursor = db.execute('''
+        SELECT r.titres, p.chemin_vers_le_fichier
+        FROM recettes r
+        JOIN photo_recette p ON r.id_recette = p.id_recette
+        WHERE r.id_categorie = ?
+    ''', (id_categorie,))
 
     recettes = cursor.fetchall()
     db.close()
 
-    # Traiter les résultats pour obtenir uniquement le nom de fichier
+    # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom de fichier
-        recettes_traitees.append({'titres': recette['titres'], 'chemin_vers_le_fichier': nom_fichier})
+        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
 
+        # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+        chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
 
+        # Remplacer les barres obliques inverses par des barres obliques normales
+        chemin_relatif = chemin_relatif.replace("\\", "/")
+
+        # Ajouter à la liste des recettes traitées
+        recettes_traitees.append({
+            'titres': recette['titres'],
+            'chemin_vers_le_fichier': chemin_relatif
+        })
+
+    # Rendre la page avec les recettes traitées
     return render_template('recette/aperitifs.html', recettes=recettes_traitees)
 
 @recette_bp.route('/entrees', methods=['GET', 'POST'])
@@ -169,19 +193,36 @@ def show_entrees():
     id_categorie = 2
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
-    cursor = db.execute('SELECT r.titres, p.chemin_vers_le_fichier FROM recettes r JOIN photo_recette p ON r.id_recette = p.id_recette WHERE id_categorie = ?', (id_categorie,))
+    # Requête pour récupérer les titres des recettes et les chemins des photos
+    cursor = db.execute('''
+        SELECT r.titres, p.chemin_vers_le_fichier
+        FROM recettes r
+        JOIN photo_recette p ON r.id_recette = p.id_recette
+        WHERE r.id_categorie = ?
+    ''', (id_categorie,))
 
     recettes = cursor.fetchall()
     db.close()
 
-    # Traiter les résultats pour obtenir uniquement le nom de fichier
+    # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom de fichier
-        recettes_traitees.append({'titres': recette['titres'], 'chemin_vers_le_fichier': nom_fichier})
+        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
 
+        # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+        chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
 
+        # Remplacer les barres obliques inverses par des barres obliques normales
+        chemin_relatif = chemin_relatif.replace("\\", "/")
+
+        # Ajouter à la liste des recettes traitées
+        recettes_traitees.append({
+            'titres': recette['titres'],
+            'chemin_vers_le_fichier': chemin_relatif
+        })
+
+    # Rendre la page avec les recettes traitées
     return render_template('recette/entrees.html', recettes=recettes_traitees)
 
 @recette_bp.route('/plats', methods=['GET', 'POST'])
@@ -190,19 +231,36 @@ def show_plats():
     id_categorie = 3
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
-    cursor = db.execute('SELECT r.titres, p.chemin_vers_le_fichier FROM recettes r JOIN photo_recette p ON r.id_recette = p.id_recette WHERE id_categorie = ?', (id_categorie,))
+    # Requête pour récupérer les titres des recettes et les chemins des photos
+    cursor = db.execute('''
+        SELECT r.titres, p.chemin_vers_le_fichier
+        FROM recettes r
+        JOIN photo_recette p ON r.id_recette = p.id_recette
+        WHERE r.id_categorie = ?
+    ''', (id_categorie,))
 
     recettes = cursor.fetchall()
     db.close()
 
-    # Traiter les résultats pour obtenir uniquement le nom de fichier
+    # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom de fichier
-        recettes_traitees.append({'titres': recette['titres'], 'chemin_vers_le_fichier': nom_fichier})
+        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
 
+        # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+        chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
 
+        # Remplacer les barres obliques inverses par des barres obliques normales
+        chemin_relatif = chemin_relatif.replace("\\", "/")
+
+        # Ajouter à la liste des recettes traitées
+        recettes_traitees.append({
+            'titres': recette['titres'],
+            'chemin_vers_le_fichier': chemin_relatif
+        })
+
+    # Rendre la page avec les recettes traitées
     return render_template('recette/plats.html', recettes=recettes_traitees)
 
 @recette_bp.route('/desserts', methods=['GET', 'POST'])
@@ -211,19 +269,36 @@ def show_desserts():
     id_categorie = 4
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
-    cursor = db.execute('SELECT r.titres, p.chemin_vers_le_fichier FROM recettes r JOIN photo_recette p ON r.id_recette = p.id_recette WHERE id_categorie = ?', (id_categorie,))
+   # Requête pour récupérer les titres des recettes et les chemins des photos
+    cursor = db.execute('''
+        SELECT r.titres, p.chemin_vers_le_fichier
+        FROM recettes r
+        JOIN photo_recette p ON r.id_recette = p.id_recette
+        WHERE r.id_categorie = ?
+    ''', (id_categorie,))
 
     recettes = cursor.fetchall()
     db.close()
 
-    # Traiter les résultats pour obtenir uniquement le nom de fichier
+    # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom de fichier
-        recettes_traitees.append({'titres': recette['titres'], 'chemin_vers_le_fichier': nom_fichier})
+        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
 
+        # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+        chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
 
+        # Remplacer les barres obliques inverses par des barres obliques normales
+        chemin_relatif = chemin_relatif.replace("\\", "/")
+
+        # Ajouter à la liste des recettes traitées
+        recettes_traitees.append({
+            'titres': recette['titres'],
+            'chemin_vers_le_fichier': chemin_relatif
+        })
+
+    # Rendre la page avec les recettes traitées
     return render_template('recette/desserts.html', recettes=recettes_traitees)
 
 @recette_bp.route('/smoothies', methods=['GET', 'POST'])
@@ -232,19 +307,36 @@ def show_smoothies():
     id_categorie = 5
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
-    cursor = db.execute('SELECT r.titres, p.chemin_vers_le_fichier FROM recettes r JOIN photo_recette p ON r.id_recette = p.id_recette WHERE id_categorie = ?', (id_categorie,))
+    # Requête pour récupérer les titres des recettes et les chemins des photos
+    cursor = db.execute('''
+        SELECT r.titres, p.chemin_vers_le_fichier
+        FROM recettes r
+        JOIN photo_recette p ON r.id_recette = p.id_recette
+        WHERE r.id_categorie = ?
+    ''', (id_categorie,))
 
     recettes = cursor.fetchall()
     db.close()
 
-    # Traiter les résultats pour obtenir uniquement le nom de fichier
+    # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom de fichier
-        recettes_traitees.append({'titres': recette['titres'], 'chemin_vers_le_fichier': nom_fichier})
+        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
 
+        # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+        chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
 
+        # Remplacer les barres obliques inverses par des barres obliques normales
+        chemin_relatif = chemin_relatif.replace("\\", "/")
+
+        # Ajouter à la liste des recettes traitées
+        recettes_traitees.append({
+            'titres': recette['titres'],
+            'chemin_vers_le_fichier': chemin_relatif
+        })
+
+    # Rendre la page avec les recettes traitées
     return render_template('recette/smoothies.html', recettes=recettes_traitees)
 
 @recette_bp.route('/boissons', methods=['GET', 'POST'])
@@ -253,19 +345,36 @@ def show_boissons():
     id_categorie = 6
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
-    cursor = db.execute('SELECT r.titres, p.chemin_vers_le_fichier FROM recettes r JOIN photo_recette p ON r.id_recette = p.id_recette WHERE id_categorie = ?', (id_categorie,))
+    # Requête pour récupérer les titres des recettes et les chemins des photos
+    cursor = db.execute('''
+        SELECT r.titres, p.chemin_vers_le_fichier
+        FROM recettes r
+        JOIN photo_recette p ON r.id_recette = p.id_recette
+        WHERE r.id_categorie = ?
+    ''', (id_categorie,))
 
     recettes = cursor.fetchall()
     db.close()
 
-    # Traiter les résultats pour obtenir uniquement le nom de fichier
+    # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom de fichier
-        recettes_traitees.append({'titres': recette['titres'], 'chemin_vers_le_fichier': nom_fichier})
+        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
 
+        # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+        chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
 
+        # Remplacer les barres obliques inverses par des barres obliques normales
+        chemin_relatif = chemin_relatif.replace("\\", "/")
+
+        # Ajouter à la liste des recettes traitées
+        recettes_traitees.append({
+            'titres': recette['titres'],
+            'chemin_vers_le_fichier': chemin_relatif
+        })
+
+    # Rendre la page avec les recettes traitées
     return render_template('recette/boissons.html', recettes=recettes_traitees)
 
 
@@ -275,15 +384,15 @@ def detail_recette(titres):
 
     # Requête pour récupérer toutes les informations de la recette, les photos, les ingrédients et le username de l'utilisateur
     cursor = db.execute('''
-        SELECT r.id_recette, r.titres, r.description, r.nombre_personne, r.temps_preparation, 
-               r.temps_cuisson, r.etapes, r.difficulte, p.chemin_vers_le_fichier, 
+        SELECT r.id_recette, r.titres, r.description, r.nombre_personne, r.temps_preparation,
+               r.temps_cuisson, r.etapes, r.difficulte, p.chemin_vers_le_fichier,
                ri.id_ingredient, ri.quantite, i.nom AS ingredient_nom,
                u.username, u.prenom
         FROM recettes r
         LEFT JOIN photo_recette p ON r.id_recette = p.id_recette
         LEFT JOIN utilise ri ON r.id_recette = ri.id_recette
         LEFT JOIN ingredients i ON ri.id_ingredient = i.id_ingredient
-        LEFT JOIN utilisateurs u ON r.id_utilisateur = u.id_utilisateur 
+        LEFT JOIN utilisateurs u ON r.id_utilisateur = u.id_utilisateur
         WHERE r.titres = ?
     ''', (titres,))
 
@@ -301,10 +410,17 @@ def detail_recette(titres):
             'temps_cuisson': recette[0]['temps_cuisson'],
             'etapes': recette[0]['etapes'],
             'difficulte': recette[0]['difficulte'],
-            'chemin_vers_le_fichier': os.path.basename(recette[0]['chemin_vers_le_fichier']) if recette[0]['chemin_vers_le_fichier'] else None,
+            'chemin_vers_le_fichier': None,
             'username': recette[0]['username'],   # Ajouter le username de l'utilisateur
             'ingredients': []
         }
+
+        # Extraire le chemin relatif de l'image si elle existe
+        if recette[0]['chemin_vers_le_fichier']:
+            # Extraction du nom du fichier
+            nom_fichier = os.path.basename(recette[0]['chemin_vers_le_fichier'])
+            # Créer le chemin relatif à 'static'
+            recette_data['chemin_vers_le_fichier'] = os.path.join('imgs', 'photo_recette', nom_fichier).replace(os.sep, '/')
 
         # Extraire tous les ingrédients associés à la recette
         for row in recette:
@@ -358,3 +474,26 @@ def resultat(recherche):
         recherche=recherche,
         recettes=recettes_traitees
     )
+
+
+@recette_bp.route('/mes-favoris', methods=('GET', 'POST'))
+@login_required
+def show_favoris():
+    user_id = session.get('user_id')
+    db = get_db()
+
+    # Requête pour récupérer les titres des recettes et les chemins des photos
+    cursor = db.execute('SELECT r.titres, p.chemin_vers_le_fichier FROM recettes r JOIN photo_recette p ON r.id_recette = p.id_recette WHERE id_utilisateur = ?', (user_id,))
+
+    recettes = cursor.fetchall()
+    db.close()
+
+    # Traiter les résultats pour obtenir uniquement le nom de fichier
+    recettes_traitees = []
+    for recette in recettes:
+        chemin_complet = recette['chemin_vers_le_fichier']
+        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom de fichier
+        recettes_traitees.append({'titres': recette['titres'], 'chemin_vers_le_fichier': nom_fichier})
+
+
+    return render_template('user/favoris.html', recettes=recettes_traitees)

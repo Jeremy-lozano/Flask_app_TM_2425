@@ -4,7 +4,6 @@ import os
 from werkzeug.utils import secure_filename
 import uuid
 from flask import current_app
-from app.config import Config
 
 
 
@@ -30,15 +29,20 @@ def allowed_file(filename):
     allowed_extensions = {'png', 'jpg', 'jpeg'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
+UPLOAD_FOLDER = os.path.join('app', 'static', 'imgs', 'photo_recette')
+
 def upload_and_get_path(file):
-    
-    if not os.path.exists(Config.UPLOAD_FOLDER):
-        os.makedirs(Config.UPLOAD_FOLDER)
-    
+    # Vérifier si le dossier existe, sinon le créer
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER)
+
     filename = secure_filename(file.filename)
-    file_path = os.path.join(Config.UPLOAD_FOLDER, filename)
+    file_path = os.path.join(UPLOAD_FOLDER, filename)
     file.save(file_path)
-    return file_path
+
+    # Retourner un chemin relatif à 'static', comme Flask s'y attend
+    return os.path.join('imgs', 'photo_recette', filename)
+
 
 
 

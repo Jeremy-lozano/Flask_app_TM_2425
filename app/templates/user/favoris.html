@@ -5,18 +5,15 @@
 {% endblock %}
 
 {% block content%}
-        <div >
-          <h1 class="title">Entrées</h1>
+        <div>
+          <h1 class="title">Mes Favoris</h1>
         </div>
         <div class="space">
           {% for recette in recettes %}
           <a href="{{ url_for('recette.detail_recette', titres=recette.titres) }}">
             <div class="photo">
               <img src="{{ url_for('static', filename=recette.chemin_vers_le_fichier) }}" id="photo-style" alt="{{ recette.titres }}">
-              <div id="titre_coeur">
-                <p>{{recette.titres}} </p>
-                <img src="{{url_for('static', filename='imgs/logo-favoris.png')}}" alt="logo-favoris" id="like">
-              </div>
+              <p>{{recette.titres}}</p>
             </div>
           </a>
           {% else %}

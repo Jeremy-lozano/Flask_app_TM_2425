@@ -23,7 +23,7 @@
   <p>Crée par "{{recette.username}}" </p>
 </div><br>
 <div class="photo-big">
-  <img src="{{ url_for('static', filename='imgs/photo_recette/' + recette.chemin_vers_le_fichier) }}" id="photo-big">
+  <img src="{{ url_for('static', filename=recette.chemin_vers_le_fichier) }}" id="photo-big" alt="{{ recette.titres }}">
 </div><br>
 <div id="infos-recette">
   <h1 class="infos-recette">Description</h1>

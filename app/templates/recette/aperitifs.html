@@ -13,7 +13,7 @@
           {% for recette in recettes %}
           <a href="{{ url_for('recette.detail_recette', titres=recette.titres) }}">
             <div class="photo">
-              <img src="{{ url_for('static', filename='imgs/photo_recette/' ~ recette.chemin_vers_le_fichier | safe) }}" id="photo-style">
+              <img src="{{ url_for('static', filename=recette.chemin_vers_le_fichier) }}" id="photo-style" alt="{{ recette.titres }}">
               <div id="titre_coeur">
                 <p>{{recette.titres}} </p>
                 <img src="{{url_for('static', filename='imgs/logo-favoris.png')}}" alt="logo-favoris" id="like">

@@ -28,8 +28,19 @@ def landing_page():
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom de fichier
-        recettes_traitees.append({'titres': recette['titres'], 'chemin_vers_le_fichier': nom_fichier})
+        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+
+        # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+        chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
+
+        # Remplacer les barres obliques inverses par des barres obliques normales
+        chemin_relatif = chemin_relatif.replace("\\", "/")
+
+        # Ajouter à la liste des recettes traitées
+        recettes_traitees.append({
+            'titres': recette['titres'],
+            'chemin_vers_le_fichier': chemin_relatif
+        })
 
 
     return render_template('home/index.html', link=url_for('user.show_profile'), recettes=recettes_traitees)
