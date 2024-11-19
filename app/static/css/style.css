@@ -342,6 +342,7 @@ align-items: center;
   height: 16px;
   margin-left: 5px;
   width: auto;
+  
 }
 
 /*utilisateur*/
@@ -389,6 +390,13 @@ align-items: center;
   justify-content: space-around;
   min-height: 400px;
   height: auto;
+
+}
+.space p{
+  width: 250px;
+  white-space: nowrap;     /* Empêche le texte de se casser en plusieurs lignes */
+  overflow: hidden;        /* Cache le texte qui dépasse du conteneur */
+  text-overflow: ellipsis; 
 }
 .photo{
   display: flex;
@@ -417,6 +425,7 @@ align-items: center;
   height: 200px;
   width: 300px;
   border-radius: 20px;
+  object-fit: cover;
 }
 
 /*footers*/
@@ -613,6 +622,7 @@ input[type="text"] {
   padding-left: 30px;
   padding-top: 50px;
   padding-right: 30px;
+  padding-bottom: 30px;
 }
 
 #photo-big{
@@ -621,6 +631,7 @@ input[type="text"] {
   height: 350px;
   width: 500px;
   border-radius: 20px;
+  object-fit: cover;
 }
 
 .photo-big{
@@ -658,7 +669,7 @@ input[type="text"] {
   left: 50%; 
   transform: translateX(-50%); 
   margin: 0;
-
+ 
 }
 
 

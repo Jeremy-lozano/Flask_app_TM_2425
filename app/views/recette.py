@@ -445,7 +445,7 @@ def resultat(recherche):
     
     # Requête SQL pour récupérer les recettes contenant le terme recherché dans le titre
     cursor = db.execute('''
-        SELECT r.id_recette, r.titres, p.chemin_vers_le_fichier, p.id_recette
+        SELECT r.id_recette, r.titres, p.chemin_vers_le_fichier
         FROM recettes r
         LEFT JOIN photo_recette p ON r.id_recette = p.id_recette
         WHERE r.titres LIKE ?
@@ -458,14 +458,19 @@ def resultat(recherche):
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
         if chemin_complet:  # Vérifier si le chemin est défini
-            chemin_relatif = os.path.basename(chemin_complet)  # Récupérer uniquement le nom de fichier
-            chemin_final = f"{chemin_relatif}"
+            nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+            # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+            chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
+            # Remplacer les barres obliques inverses par des barres obliques normales
+            chemin_relatif = chemin_relatif.replace("\\", "/")
         else:
-            chemin_final = None  # Pas de chemin d'image disponible
+            chemin_relatif = None  # Pas de chemin d'image disponible
+        
+        # Ajouter à la liste des recettes traitées
         recettes_traitees.append({
             'id_recette': recette['id_recette'],
             'titres': recette['titres'],
-            'chemin_vers_le_fichier': chemin_final
+            'chemin_vers_le_fichier': chemin_relatif
         })
     
     # Affiche la recherche de l'utilisateur en tant que titre
@@ -474,7 +479,6 @@ def resultat(recherche):
         recherche=recherche,
         recettes=recettes_traitees
     )
-
 
 @recette_bp.route('/mes-favoris', methods=('GET', 'POST'))
 @login_required
