@@ -1,4 +1,6 @@
+import sqlite3
 from flask import (Blueprint, flash, g, jsonify, redirect, render_template, request, session, url_for)
+from app.db import db
 from app.db.db import get_db, close_db
 from app.utils import *
 import os
@@ -139,6 +141,7 @@ def validation():
 
 @recette_bp.route('/suggestions', methods=['GET'])
 def suggestions():
+
     query = request.args.get('q', '')  # Récupère la requête de recherche de l'utilisateur
     if query:
         db = get_db()
@@ -150,21 +153,24 @@ def suggestions():
         suggestions = [{'id_ingredient': row['id_ingredient'], 'nom': row['nom']} for row in results]
         return jsonify(suggestions)
     return jsonify([])  # Retourne une liste vide si aucun résultat
+
+
 @recette_bp.route('/aperitifs', methods=['GET', 'POST'])
 def show_aperitifs():
     db = get_db()
+    user_id = session.get('user_id')
+
     id_categorie = 1  # ID de la catégorie "Apéritifs"
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
     cursor = db.execute('''
-        SELECT r.titres, p.chemin_vers_le_fichier
+        SELECT r.titres, p.chemin_vers_le_fichier, r.id_recette
         FROM recettes r
         JOIN photo_recette p ON r.id_recette = p.id_recette
         WHERE r.id_categorie = ?
     ''', (id_categorie,))
 
     recettes = cursor.fetchall()
-    db.close()
 
     # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
@@ -177,32 +183,44 @@ def show_aperitifs():
 
         # Remplacer les barres obliques inverses par des barres obliques normales
         chemin_relatif = chemin_relatif.replace("\\", "/")
+        if user_id:
+            cursor_like = db.execute('''
+                SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
+            ''', (user_id, recette['id_recette']))
+            is_liked = cursor_like.fetchone() is not None  # Vérifier si une ligne existe dans la table "aimer"
+        else:
+            is_liked = False
 
         # Ajouter à la liste des recettes traitées
         recettes_traitees.append({
+            'id_utilisateur': user_id,
+            'id_recette': recette['id_recette'],
             'titres': recette['titres'],
-            'chemin_vers_le_fichier': chemin_relatif
+            'chemin_vers_le_fichier': chemin_relatif,
+            'is_liked': is_liked
         })
+    db.close() 
 
     # Rendre la page avec les recettes traitées
-    return render_template('recette/aperitifs.html', recettes=recettes_traitees)
+    return render_template('recette/aperitifs.html', recettes=recettes_traitees, categorie="aperitifs")
 
 @recette_bp.route('/entrees', methods=['GET', 'POST'])
 def show_entrees():
     db = get_db()
+    
     id_categorie = 2
+    user_id = session.get('user_id')
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
     # Requête pour récupérer les titres des recettes et les chemins des photos
     cursor = db.execute('''
-        SELECT r.titres, p.chemin_vers_le_fichier
+        SELECT r.titres, p.chemin_vers_le_fichier, r.id_recette
         FROM recettes r
         JOIN photo_recette p ON r.id_recette = p.id_recette
         WHERE r.id_categorie = ?
     ''', (id_categorie,))
 
     recettes = cursor.fetchall()
-    db.close()
 
     # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
@@ -215,32 +233,43 @@ def show_entrees():
 
         # Remplacer les barres obliques inverses par des barres obliques normales
         chemin_relatif = chemin_relatif.replace("\\", "/")
+        if user_id:
+            cursor_like = db.execute('''
+                SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
+            ''', (user_id, recette['id_recette']))
+            is_liked = cursor_like.fetchone() is not None  # Vérifier si une ligne existe dans la table "aimer"
+        else:
+            is_liked = False
 
         # Ajouter à la liste des recettes traitées
         recettes_traitees.append({
+            'id_utilisateur': user_id,
+            'id_recette': recette['id_recette'],
             'titres': recette['titres'],
-            'chemin_vers_le_fichier': chemin_relatif
+            'chemin_vers_le_fichier': chemin_relatif,
+            'is_liked': is_liked
         })
-
+    db.close()
     # Rendre la page avec les recettes traitées
-    return render_template('recette/entrees.html', recettes=recettes_traitees)
+    return render_template('recette/entrees.html', recettes=recettes_traitees,categorie="entrees")
 
 @recette_bp.route('/plats', methods=['GET', 'POST'])
 def show_plats():
     db = get_db()
+    
     id_categorie = 3
+    user_id = session.get('user_id')
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
     # Requête pour récupérer les titres des recettes et les chemins des photos
     cursor = db.execute('''
-        SELECT r.titres, p.chemin_vers_le_fichier
+        SELECT r.titres, p.chemin_vers_le_fichier, r.id_recette
         FROM recettes r
         JOIN photo_recette p ON r.id_recette = p.id_recette
         WHERE r.id_categorie = ?
     ''', (id_categorie,))
 
     recettes = cursor.fetchall()
-    db.close()
 
     # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
@@ -253,32 +282,44 @@ def show_plats():
 
         # Remplacer les barres obliques inverses par des barres obliques normales
         chemin_relatif = chemin_relatif.replace("\\", "/")
+        if user_id:
+            cursor_like = db.execute('''
+                SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
+            ''', (user_id, recette['id_recette']))
+            is_liked = cursor_like.fetchone() is not None  # Vérifier si une ligne existe dans la table "aimer"
+        else:
+            is_liked = False
 
         # Ajouter à la liste des recettes traitées
         recettes_traitees.append({
+            'id_utilisateur': user_id,
+            'id_recette': recette['id_recette'],
             'titres': recette['titres'],
-            'chemin_vers_le_fichier': chemin_relatif
+            'chemin_vers_le_fichier': chemin_relatif,
+            'is_liked': is_liked
         })
+    db.close()
 
     # Rendre la page avec les recettes traitées
-    return render_template('recette/plats.html', recettes=recettes_traitees)
+    return render_template('recette/plats.html', recettes=recettes_traitees,categorie="plats")
 
 @recette_bp.route('/desserts', methods=['GET', 'POST'])
 def show_desserts():
     db = get_db()
+    
     id_categorie = 4
+    user_id = session.get('user_id')
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
-   # Requête pour récupérer les titres des recettes et les chemins des photos
+    # Requête pour récupérer les titres des recettes et les chemins des photos
     cursor = db.execute('''
-        SELECT r.titres, p.chemin_vers_le_fichier
+        SELECT r.titres, p.chemin_vers_le_fichier, r.id_recette
         FROM recettes r
         JOIN photo_recette p ON r.id_recette = p.id_recette
         WHERE r.id_categorie = ?
     ''', (id_categorie,))
 
     recettes = cursor.fetchall()
-    db.close()
 
     # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
@@ -291,32 +332,44 @@ def show_desserts():
 
         # Remplacer les barres obliques inverses par des barres obliques normales
         chemin_relatif = chemin_relatif.replace("\\", "/")
+        if user_id:
+            cursor_like = db.execute('''
+                SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
+            ''', (user_id, recette['id_recette']))
+            is_liked = cursor_like.fetchone() is not None  # Vérifier si une ligne existe dans la table "aimer"
+        else:
+            is_liked = False
 
         # Ajouter à la liste des recettes traitées
         recettes_traitees.append({
+            'id_utilisateur': user_id,
+            'id_recette': recette['id_recette'],
             'titres': recette['titres'],
-            'chemin_vers_le_fichier': chemin_relatif
+            'chemin_vers_le_fichier': chemin_relatif,
+            'is_liked': is_liked
         })
+    db.close()
 
     # Rendre la page avec les recettes traitées
-    return render_template('recette/desserts.html', recettes=recettes_traitees)
+    return render_template('recette/desserts.html', recettes=recettes_traitees, categorie="desserts")
 
 @recette_bp.route('/smoothies', methods=['GET', 'POST'])
 def show_smoothies():
     db = get_db()
+    
     id_categorie = 5
+    user_id = session.get('user_id')
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
     # Requête pour récupérer les titres des recettes et les chemins des photos
     cursor = db.execute('''
-        SELECT r.titres, p.chemin_vers_le_fichier
+        SELECT r.titres, p.chemin_vers_le_fichier, r.id_recette
         FROM recettes r
         JOIN photo_recette p ON r.id_recette = p.id_recette
         WHERE r.id_categorie = ?
     ''', (id_categorie,))
 
     recettes = cursor.fetchall()
-    db.close()
 
     # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
@@ -329,32 +382,43 @@ def show_smoothies():
 
         # Remplacer les barres obliques inverses par des barres obliques normales
         chemin_relatif = chemin_relatif.replace("\\", "/")
+        if user_id:
+            cursor_like = db.execute('''
+                SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
+            ''', (user_id, recette['id_recette']))
+            is_liked = cursor_like.fetchone() is not None  # Vérifier si une ligne existe dans la table "aimer"
+        else:
+            is_liked = False
 
         # Ajouter à la liste des recettes traitées
         recettes_traitees.append({
+            'id_utilisateur': user_id,
+            'id_recette': recette['id_recette'],
             'titres': recette['titres'],
-            'chemin_vers_le_fichier': chemin_relatif
+            'chemin_vers_le_fichier': chemin_relatif,
+            'is_liked': is_liked
         })
-
+    db.close()
     # Rendre la page avec les recettes traitées
-    return render_template('recette/smoothies.html', recettes=recettes_traitees)
+    return render_template('recette/smoothies.html', recettes=recettes_traitees,categorie="smoothies")
 
 @recette_bp.route('/boissons', methods=['GET', 'POST'])
 def show_boissons():
     db = get_db()
+    
     id_categorie = 6
+    user_id = session.get('user_id')
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
     # Requête pour récupérer les titres des recettes et les chemins des photos
     cursor = db.execute('''
-        SELECT r.titres, p.chemin_vers_le_fichier
+        SELECT r.titres, p.chemin_vers_le_fichier, r.id_recette
         FROM recettes r
         JOIN photo_recette p ON r.id_recette = p.id_recette
         WHERE r.id_categorie = ?
     ''', (id_categorie,))
 
     recettes = cursor.fetchall()
-    db.close()
 
     # Traiter les résultats pour obtenir le chemin relatif pour les fichiers statiques
     recettes_traitees = []
@@ -367,13 +431,23 @@ def show_boissons():
 
         # Remplacer les barres obliques inverses par des barres obliques normales
         chemin_relatif = chemin_relatif.replace("\\", "/")
+        if user_id:
+            cursor_like = db.execute('''
+                SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
+            ''', (user_id, recette['id_recette']))
+            is_liked = cursor_like.fetchone() is not None  # Vérifier si une ligne existe dans la table "aimer"
+        else:
+            is_liked = False
 
         # Ajouter à la liste des recettes traitées
         recettes_traitees.append({
+            'id_utilisateur': user_id,
+            'id_recette': recette['id_recette'],
             'titres': recette['titres'],
-            'chemin_vers_le_fichier': chemin_relatif
+            'chemin_vers_le_fichier': chemin_relatif,
+            'is_liked': is_liked
         })
-
+    db.close()
     # Rendre la page avec les recettes traitées
     return render_template('recette/boissons.html', recettes=recettes_traitees)
 
@@ -381,6 +455,8 @@ def show_boissons():
 @recette_bp.route('/<titres>', methods=['GET', 'POST'])
 def detail_recette(titres):
     db = get_db()
+
+    user_id = session.get('user_id')
 
     # Requête pour récupérer toutes les informations de la recette, les photos, les ingrédients et le username de l'utilisateur
     cursor = db.execute('''
@@ -403,6 +479,7 @@ def detail_recette(titres):
     if recette:
         # Initialisation des variables pour la recette et les ingrédients
         recette_data = {
+            'id_recette': recette[0]['id_recette'],
             'titres': recette[0]['titres'],
             'description': recette[0]['description'],
             'nombre_personne': recette[0]['nombre_personne'],
@@ -412,7 +489,7 @@ def detail_recette(titres):
             'difficulte': recette[0]['difficulte'],
             'chemin_vers_le_fichier': None,
             'username': recette[0]['username'],   # Ajouter le username de l'utilisateur
-            'ingredients': []
+            'ingredients': [],            
         }
 
         # Extraire le chemin relatif de l'image si elle existe
@@ -442,6 +519,8 @@ def detail_recette(titres):
 @recette_bp.route("/resultat/<recherche>")
 def resultat(recherche):
     db = get_db()
+    user_id = session.get('user_id')
+
     
     # Requête SQL pour récupérer les recettes contenant le terme recherché dans le titre
     cursor = db.execute('''
@@ -451,7 +530,7 @@ def resultat(recherche):
         WHERE r.titres LIKE ?
     ''', (f'%{recherche}%',))  # Utilisation de LIKE pour rechercher dans le titre
     recettes = cursor.fetchall()
-    db.close()
+    
     
     # Traiter les chemins pour qu'ils soient relatifs
     recettes_traitees = []
@@ -465,12 +544,21 @@ def resultat(recherche):
             chemin_relatif = chemin_relatif.replace("\\", "/")
         else:
             chemin_relatif = None  # Pas de chemin d'image disponible
+        if user_id:
+            cursor_like = db.execute('''
+                SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
+            ''', (user_id, recette['id_recette']))
+            is_liked = cursor_like.fetchone() is not None  # Vérifier si une ligne existe dans la table "aimer"
+        else:
+            is_liked = False
         
         # Ajouter à la liste des recettes traitées
         recettes_traitees.append({
+            'id_utilisateur': user_id,
             'id_recette': recette['id_recette'],
             'titres': recette['titres'],
-            'chemin_vers_le_fichier': chemin_relatif
+            'chemin_vers_le_fichier': chemin_relatif,
+            'is_liked': is_liked,
         })
     
     # Affiche la recherche de l'utilisateur en tant que titre
@@ -487,17 +575,84 @@ def show_favoris():
     db = get_db()
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
-    cursor = db.execute('SELECT r.titres, p.chemin_vers_le_fichier FROM recettes r JOIN photo_recette p ON r.id_recette = p.id_recette WHERE id_utilisateur = ?', (user_id,))
-
+    cursor = db.execute('''
+        SELECT r.id_recette, r.titres, p.chemin_vers_le_fichier
+        FROM recettes r
+        LEFT JOIN photo_recette p ON r.id_recette = p.id_recette
+    ''')  # Utilisation de LIKE pour rechercher dans le titre
     recettes = cursor.fetchall()
-    db.close()
 
     # Traiter les résultats pour obtenir uniquement le nom de fichier
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom de fichier
-        recettes_traitees.append({'titres': recette['titres'], 'chemin_vers_le_fichier': nom_fichier})
+        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
 
+        # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+        chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
+
+        # Remplacer les barres obliques inverses par des barres obliques normales
+        chemin_relatif = chemin_relatif.replace("\\", "/")
+        if user_id:
+            cursor_like = db.execute('''
+                SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
+            ''', (user_id, recette['id_recette']))
+            is_liked = cursor_like.fetchone() is not None  # Vérifier si une ligne existe dans la table "aimer"
+        else:
+            is_liked = False
+
+        # Ajouter à la liste des recettes traitées
+        recettes_traitees.append({
+            'id_utilisateur': user_id,
+            'id_recette': recette['id_recette'],
+            'titres': recette['titres'],
+            'chemin_vers_le_fichier': chemin_relatif,
+            'is_liked': is_liked
+        })
+    db.close()
 
     return render_template('user/favoris.html', recettes=recettes_traitees)
+
+
+@recette_bp.route('/like', methods=('GET', 'POST'))
+@login_required
+def like():
+    data = request.get_json()
+    id_utilisateur = data.get('id_utilisateur')
+    id_recette = data.get('id_recette')
+    like_action = data.get('like')  # True pour like, False pour unlike
+
+    if not id_utilisateur or not id_recette:
+        return jsonify({'error': 'Données invalides'}), 400
+
+    db = get_db()
+
+    try:
+        if like_action:
+            # Vérifier si le like existe déjà
+            cursor = db.execute(
+                "SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?",
+                (id_utilisateur, id_recette)
+            )
+            if cursor.fetchone():
+                return jsonify({'message': 'Le like existe déjà'}), 200
+
+            # Ajouter le like
+            db.execute(
+                "INSERT INTO aimer (id_utilisateur, id_recette) VALUES (?, ?)",
+                (id_utilisateur, id_recette)
+            )
+            db.commit()
+            return jsonify({'message': 'Like ajouté avec succès'}), 201
+        else:
+            # Supprimer le like
+            db.execute(
+                "DELETE FROM aimer WHERE id_utilisateur = ? AND id_recette = ?",
+                (id_utilisateur, id_recette)
+            )
+            db.commit()
+            return jsonify({'message': 'Like supprimé avec succès'}), 200
+
+    except sqlite3.Error as e:
+        print("Erreur SQLite :", e)
+        return jsonify({'error': 'Erreur serveur'}), 500

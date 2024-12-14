@@ -189,3 +189,58 @@ function addIngredientToList(id_ingredient, nom) {
   // Après avoir ajouté l'ingrédient, vider la barre de recherche pour un nouvel ajout
   $('#nomInput').val('');
 }
+
+  function toggleColor(id, id_utilisateur, id_recette) {
+    console.log("ID du bouton : ", id);
+
+    const btn = document.getElementById(id);
+    if (!btn) {
+        console.error("Élément avec l'ID " + id + " non trouvé dans le DOM.");
+        return;  // Sortir de la fonction si l'élément n'existe pas
+    }
+    
+    // Utiliser getComputedStyle pour obtenir la couleur réelle
+    const currentColor = btn.style.color;
+
+    // Vérifier si la couleur actuelle est celle du "like"  
+    const isLiked = currentColor === "rgb(187, 82, 2)"; // #bb5202 en RGB
+
+    // Changer la couleur
+    btn.style.color = isLiked ? "black" : "#bb5202";  // Inverser la couleur
+
+    // Envoi des données au serveur
+    fetch('/recette/like', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            id_utilisateur: id_utilisateur,
+            id_recette: id_recette,
+            like: !isLiked
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erreur lors de l\'enregistrement du like.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Réponse du serveur :', data);
+    })
+    .catch(error => {
+        console.error('Erreur :', error);
+        btn.style.color = isLiked ? "#bb5202" : "black"; // Rétablir la couleur en cas d'erreur
+    });
+  }
+
+
+
+function togglePopup(){
+  let popup = document.querySelector("#popup-overlay")
+  popup.classList.toggle("open");
+  setTimeout(() => {
+    popup.style.display = "none";
+  }, 3000);
+}

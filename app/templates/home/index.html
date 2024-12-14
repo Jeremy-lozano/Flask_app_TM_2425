@@ -4,9 +4,17 @@
   Template de base
 {% endblock %}
 
+
 {% block content%}
         <div >
           <h1 class="title">Accueil</h1>
+        </div>
+        <div id="popup-overlay">
+          <div class="popup-content">
+            <h2>Connection requise pour liker</h2>
+            <a href="{{ url_for('auth.login') }}" class="popup-link">Se connecter</a>
+            <a href="javascript:void(0)" class="popup-exit" onclick="togglePopup()"> Fermer</a>
+          </div>
         </div>
         <div class="space">
           {% for recette in recettes %}
@@ -15,10 +23,25 @@
               <img src="{{ url_for('static', filename=recette.chemin_vers_le_fichier) }}" id="photo-style" alt="{{ recette.titres }}">
               <div id="titre_coeur">
                 <p>{{recette.titres}} </p>
-                <img src="{{url_for('static', filename='imgs/logo-favoris.png')}}" alt="logo-favoris" id="like-button" class="like-btn">
+              </a>
+              <button id="{{ recette.id_recette }}" 
+              {% if recette.id_utilisateur %}
+              onclick="toggleColor('{{ recette.id_recette }}', '{{ recette.id_utilisateur }}', '{{ recette.id_recette }}')"
+              {% else %}
+              onclick="togglePopup()"
+              {% endif %}
+              class="btn"
+              {% if recette.is_liked %}
+              style="color:  #bb5202 ;"
+              {% endif %}>
+              <i class="fa-regular fa-heart"></i>
+              </button>
+
+             
+                
               </div>
             </div>
-          </a>
+          
           {% else %}
             <p>Aucune recette disponible.</p>
           {% endfor %}

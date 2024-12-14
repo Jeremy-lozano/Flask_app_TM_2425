@@ -5,6 +5,19 @@
 {% endblock %}
 
 {% block content%}
+
+<!-- 
+{% if categorie %}
+<div class="retour">
+  <a href="{{ url_for('recette.show_' + categorie, categorie=categorie) }}">Retour</a>
+</div>  
+{% else %}
+<div class="retour">
+  <a href="{{ url_for('home.landing_page') }}">Retour</a> 
+</div>
+{% endif %}-->
+
+
 <div id="top">
   {% if recette.difficulte == "facile" %}
     <img src="{{url_for('static', filename='imgs/facile.png')}}" alt="facile" id="difficulte">
@@ -16,14 +29,15 @@
     <p>Difficulté inconnue.</p>
   {% endif %}
   <h1 class="title">{{recette.titres}}</h1>
-  <img src="{{url_for('static', filename='imgs/logo-favoris.png')}}" alt="logo-favoris" id="favoris">
-  
+  <button style="visibility: hidden;">
+  <i class="fa-regular fa-heart" style="visibility: hidden;"></i>
+  </button>  
 </div>
 <div id="createur">
   <p>Crée par "{{recette.username}}" </p>
 </div><br>
 <div class="photo-big">
-  <img src="{{ url_for('static', filename=recette.chemin_vers_le_fichier) }}" id="photo-big" alt="{{ recette.titres }}">
+  <img src="{{ url_for('static', filename=recette.chemin_vers_le_fichier) }}" id="photo-big"  alt="{{ recette.titres }}">
 </div><br>
 <div id="infos-recette">
   <h1 class="infos-recette">Description</h1>

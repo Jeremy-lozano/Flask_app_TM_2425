@@ -41,7 +41,7 @@ def register():
                 flash(error)
                 return redirect(url_for("auth.register"))
             
-            return redirect(url_for("auth.login"))
+            return redirect(url_for("home.landing_page"))
          
         else:
             error = "Nom d'utilisateur ou mot de passe invalide"
@@ -86,7 +86,8 @@ def login():
             session['user_id'] = user['id_utilisateur']
             session['user_logged_in'] = True
             # On redirige l'utilisateur vers la page principale une fois qu'il s'est connecté
-            return redirect("/user/profile")
+            
+            return redirect(url_for("home.landing_page"))
         
         else:
             # En cas d'erreur, on ajoute l'erreur dans la session et on redirige l'utilisateur vers le formulaire de login

@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/719da9c918.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 </head>
 
@@ -69,9 +70,9 @@
                     <a href="{{ url_for('recette.show_recettes') }}">Créer</a>
                     <img src="{{url_for('static', filename='imgs/logo-creer.png')}}" alt="logo-creer" id="logo-right"/>
                 </div>
-                <div class ="right-compte">
+                <div class="right-compte">
                     <a href="{{ url_for('user.show_profile') }}">Compte</a>
-                    <img src="{{url_for('static', filename='imgs/logo-compte.png')}}" alt="logo-compte" id="logo-right"/>
+                    <img src="{{ url_for('static', filename='imgs/logo-compte.png') }}" alt="logo-compte" id="logo-right" />
                 </div>
         
             </div>

@@ -15,14 +15,17 @@
         <input name="username" required id="form"><br>
         <label for="password">Mot de passe</label>
         <input type="password" name="password" id="form" required><br>
-        <input type="submit" value="Se connecter" id="button-login"> <br>
+        <button type="submit" id="button-login">Se connecter</button>
       </form>
+      {% for message in get_flashed_messages() %}
+        <div>{{ message }}</div><br>
+      {% endfor %}
       <a href="{{ url_for('auth.forgot_password') }}" id="mdp"> Mot de passe oublié ?</a><br>
       <a href="{{ url_for('auth.register') }}" id="mdp"> Pas encore de compte ?</a>
 
-      {% for message in get_flashed_messages() %}
-        <div>{{ message }}</div>
-      {% endfor %}
+      
+
+      
     </div>
   </div>
 {% endblock %}
