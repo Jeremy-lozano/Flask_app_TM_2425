@@ -153,6 +153,7 @@ $(function() {
   });
 });
 
+
 function selectSuggestion(id_ingredient, nom) {
   // Mettre le nom de l'ingrédient dans la barre de recherche
   $('#nomInput').val(nom);
@@ -206,7 +207,7 @@ function addIngredientToList(id_ingredient, nom) {
     const isLiked = currentColor === "rgb(187, 82, 2)"; // #bb5202 en RGB
 
     // Changer la couleur
-    btn.style.color = isLiked ? "black" : "#bb5202";  // Inverser la couleur
+    btn.style.color = isLiked ? "#bb5202" : "#bb5202"; // Inverser la couleur
 
     // Envoi des données au serveur
     fetch('/recette/like', {
@@ -246,3 +247,25 @@ function togglePopup(){
     popup.style.display = "none";
   }, 3000);
 }
+
+
+const quill_etapes = new Quill('#editor-etapes', {
+  theme: 'snow',
+  placeholder: 'Expliquez vos étapes de préparation'
+});
+
+const quill_description = new Quill('#editor-description', {
+  theme: 'snow',
+  placeholder: 'Racontez nous !'
+});
+
+// Attach event listener to the form
+document.getElementById('dynamicForm').addEventListener('submit', function (event) {
+  // Get the HTML content from the Quill editor
+  const content_etapes = quill_etapes.root.innerHTML;
+  const content_description = quill_description.root.innerHTML;
+
+  // Set the value of the hidden input field
+  document.getElementById('content_etapes').value = content_etapes;
+  document.getElementById('content_description').value = content_description;
+});

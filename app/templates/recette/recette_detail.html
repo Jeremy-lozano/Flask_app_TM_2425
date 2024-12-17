@@ -6,7 +6,7 @@
 
 {% block content%}
 
-<!-- 
+
 {% if categorie %}
 <div class="retour">
   <a href="{{ url_for('recette.show_' + categorie, categorie=categorie) }}">Retour</a>
@@ -15,7 +15,7 @@
 <div class="retour">
   <a href="{{ url_for('home.landing_page') }}">Retour</a> 
 </div>
-{% endif %}-->
+{% endif %}
 
 
 <div id="top">
@@ -28,20 +28,20 @@
   {% else %}
     <p>Difficulté inconnue.</p>
   {% endif %}
-  <h1 class="title">{{recette.titres}}</h1>
+  <h1 class="title">{{recette.titres }}</h1>
   <button style="visibility: hidden;">
   <i class="fa-regular fa-heart" style="visibility: hidden;"></i>
   </button>  
 </div>
 <div id="createur">
-  <p>Crée par "{{recette.username}}" </p>
+  <p>Crée par {{recette.username}} </p>
 </div><br>
 <div class="photo-big">
   <img src="{{ url_for('static', filename=recette.chemin_vers_le_fichier) }}" id="photo-big"  alt="{{ recette.titres }}">
 </div><br>
 <div id="infos-recette">
   <h1 class="infos-recette">Description</h1>
-  <p>{{recette.description}}</p><br>
+  <p>{{recette.description | safe}}</p><br>
   <h1 class="infos-recette">Liste des ingrédients pour {{recette.nombre_personne}} personnes : </h1>
     {% for ingredient in recette.ingredients %}
         <p><strong>{{ ingredient.ingredient_nom }}:</strong> {{ ingredient.quantite }}</p>
@@ -50,8 +50,8 @@
   <p><strong>Temps de préparation : </strong>{{recette.temps_preparation}}</p>
   <p><strong>Temps de cuisson/repos : </strong>{{recette.temps_cuisson}}</p><br>
   <h1 class="infos-recette">Suivez ces étapes :</h1>
-  <p>{{recette.etapes}}</p>
-  <h1 class="title">Bonne dégustation, {{g.user['prenom']}}!</h1>
+  <p>{{recette.etapes | safe}}</p>
+  <h1 class="title">Bonne dégustation {{g.user['prenom']}}!</h1>
 </div><br>
 
         

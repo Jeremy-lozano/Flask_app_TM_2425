@@ -141,18 +141,18 @@ def validation():
 
 @recette_bp.route('/suggestions', methods=['GET'])
 def suggestions():
-
-    query = request.args.get('q', '')  # Récupère la requête de recherche de l'utilisateur
+    query = request.args.get('q', '').strip()  # Récupère la requête et supprime les espaces inutiles
     if query:
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT id_ingredient, nom FROM ingredients WHERE nom LIKE ?", ('%' + query + '%',))
+        # Modifier la requête pour rechercher uniquement les noms qui commencent par les lettres saisies
+        cursor.execute("SELECT id_ingredient, nom FROM ingredients WHERE nom LIKE ?", (query + '%',))
         results = cursor.fetchall()
         db.close()
         # Convertir les résultats en une liste de dictionnaires
         suggestions = [{'id_ingredient': row['id_ingredient'], 'nom': row['nom']} for row in results]
         return jsonify(suggestions)
-    return jsonify([])  # Retourne une liste vide si aucun résultat
+    return jsonify([])  # Retourne une liste vide si aucune requête n'est fournie
 
 
 @recette_bp.route('/aperitifs', methods=['GET', 'POST'])

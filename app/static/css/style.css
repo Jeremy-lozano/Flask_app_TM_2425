@@ -228,6 +228,16 @@ align-items: center;
 
 .fa-heart{
   transform: scale(1.2);
+  
+}
+
+.ql-toolbar.ql-snow{
+border-top-left-radius: 5px;
+border-top-right-radius: 5px;
+}
+.ql-container.ql-snow{
+border-bottom-left-radius:5px;
+border-bottom-right-radius: 5px;
 }
 
 #button-login{
@@ -397,11 +407,11 @@ align-items: center;
 
 /*afficher recette*/
 .title{
-  
+  width: 100%;
   left: 50%; 
   transform: translateX(25); 
   margin-top: 50px;
-
+  flex-wrap: wrap;
   display: flex;
   justify-content: center;
   align-items:center ;
@@ -416,12 +426,27 @@ align-items: center;
   height: auto;
 
 }
+.retour{
+  padding-top: 15px;
+  padding-left: 20px;
+}
+
+.retour a{
+  text-decoration: none;
+  font-size: 18px;
+  color: #000000;
+}
+.retour a:hover{
+  text-decoration: underline;
+  color: #bb5202;
+}
 .space p{
   width: 250px;
   white-space: nowrap;     /* Empêche le texte de se casser en plusieurs lignes */
   overflow: hidden;        /* Cache le texte qui dépasse du conteneur */
   text-overflow: ellipsis; 
-}
+  display: flex;
+  }
 .photo{
   display: flex;
   flex-direction: column;
@@ -478,14 +503,14 @@ align-items: center;
   
 }
 #nav-infos{
-  padding-top: 10px;
+  padding-top: 25px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
 }
 
 #nav-infos p{
-  font-size: 20px;  
+  font-size: 19px;  
   width: 150px;
 }
 
@@ -500,7 +525,7 @@ align-items: center;
 #footer-nav a{
   color: black;
   text-decoration: none;
-  font-size: 20px;
+  font-size: 19px;
   width: 150px;
 }
 
@@ -720,6 +745,13 @@ input[type="text"] {
   align-items: center;
 }
 
+#infos-recette ol{
+  margin-left: 60px;
+  margin-right: 60px;
+  font-size: 18px;
+  line-height: 1.8;
+  text-align: justify;
+}
 .infos-recette{
   font-weight: normal;
   margin-left: 30px;

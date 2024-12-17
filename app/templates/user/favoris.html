@@ -18,13 +18,22 @@
         <p>{{recette.titres}} </p>
       </a>
       <button id="{{ recette.id_recette }}" 
-      onclick="toggleColor('{{ recette.id_recette }}', '{{ recette.id_utilisateur }}', '{{ recette.id_recette }}')" 
-      class="btn"
-      {% if recette.is_liked %}
-      style="color:  #bb5202 ;"
-      {% endif %}>
-      <i class="fa-regular fa-heart"></i>
-      </button> 
+              {% if recette.id_utilisateur %}
+              onclick="toggleColor('{{ recette.id_recette }}', '{{ recette.id_utilisateur }}', '{{ recette.id_recette }}')"
+              {% else %}
+              onclick="togglePopup()"
+              {% endif %}
+              class="btn"
+              {% if recette.is_liked %}
+              style="color:  #bb5202 ;"
+              {% endif %}>
+
+              {% if recette.is_liked %}
+              <i class="fa-solid fa-heart"></i>
+              {% else %}
+              <i class="fa-regular fa-heart"></i>
+              {% endif %}
+              </button>
     </div>
     </div>
     {%endif%}

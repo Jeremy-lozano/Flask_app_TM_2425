@@ -28,9 +28,13 @@
               {% if recette.is_liked %}
               style="color:  #bb5202 ;"
               {% endif %}>
-              <i class="fa-regular fa-heart"></i>
-              </button>
 
+              {% if recette.is_liked %}
+              <i class="fa-solid fa-heart"></i>
+              {% else %}
+              <i class="fa-regular fa-heart"></i>
+              {% endif %}
+              </button>
                     
           </div>
             </div>

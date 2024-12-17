@@ -17,6 +17,7 @@
               <div id="titre_coeur">
                 <p>{{recette.titres}} </p>
               </a>
+              
               <button id="{{ recette.id_recette }}" 
               {% if recette.id_utilisateur %}
               onclick="toggleColor('{{ recette.id_recette }}', '{{ recette.id_utilisateur }}', '{{ recette.id_recette }}')"
@@ -27,7 +28,12 @@
               {% if recette.is_liked %}
               style="color:  #bb5202 ;"
               {% endif %}>
+
+              {% if recette.is_liked %}
+              <i class="fa-solid fa-heart"></i>
+              {% else %}
               <i class="fa-regular fa-heart"></i>
+              {% endif %}
               </button>
 
                       
