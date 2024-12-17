@@ -23,6 +23,8 @@ def show_profile():
     recettes = cursor.fetchall() 
     db.close()
 
+    
+
     # Si l'id de l'utilisateur dans le cookie session est nul, cela signifie que l'utilisateur n'est pas connecté
     # On met donc l'attribut 'user' de l'objet 'g' à None
     if user_id is None:

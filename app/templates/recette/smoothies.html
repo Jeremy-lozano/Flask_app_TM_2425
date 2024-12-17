@@ -8,13 +8,7 @@
         <div >
           <h1 class="title">Smoothies</h1>
         </div>
-        <div id="popup-overlay">
-          <div class="popup-content">
-            <h2>Connection requise pour liker</h2>
-            <a href="{{ url_for('auth.login') }}" class="popup-link">Se connecter</a>
-            <a href="javascript:void(0)" class="popup-exit" onclick="togglePopup()"> Fermer</a>
-          </div>
-        </div>
+        
         <div class="space">
           {% for recette in recettes %}
           

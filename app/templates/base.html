@@ -80,24 +80,45 @@
         
     </header>
     <main id="main-content">
+        <div id="popup-overlay">
+            <div class="popup-content">
+              <h2>Connection requise pour liker</h2>
+              <a href="{{ url_for('auth.login') }}" class="popup-link">Se connecter</a>
+              <a href="javascript:void(0)" class="popup-exit" onclick="togglePopup()"> Fermer</a>
+            </div>
+          </div>  
         <div class="container-rectangle">
             <div class="container-menu"> 
                 {% block content %}   
                 {% endblock %}
+                
             </div>
         </div>
     </main>
 
     <footer id="footer">
         <div id="footer-nav">
-            <div>
-                <p>Cook & Smile</p>
+            <div class="footer-logo">
+                <div class="footer-logo-main">
+                    <img id="footer-logo" src="{{url_for('static', filename='imgs/logo.png')}}" alt="logo"/>
+
+                    <h1 id="titre">Cook & Smile</h1>
+                </div>
+                <p>La cuisine avec le sourire</p>
             </div>
-            <div>
-                <p>Collège du Sud, 1630, Bulle </p>
-            </div>
-            <div>
-                <p>Jérémy Lozano</p>
+            <div class="footer-nav-info">
+                <div id="nav-infos">
+                    <div>
+                        <a href="{{ url_for('home.apropos') }}"> A propos de nous </a>
+                    </div>
+                    <div>
+                        <p>FAQ</p>
+                    </div>
+                </div>
+            
+                <div class="footer-credit">
+                    <p>Réalisé par Jérémy Lozano</p>
+                </div>
             </div>
         </div>
     </footer>

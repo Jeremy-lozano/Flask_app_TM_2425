@@ -1,3 +1,4 @@
+from pydoc import apropos
 from flask import (Blueprint, flash, g, redirect, render_template, request, session, url_for, current_app)
 import os
 from app.db.db import get_db, close_db
@@ -65,6 +66,12 @@ def landing_page():
 @home_bp.route('/<path:text>', methods=['GET', 'POST'])
 def not_found_error(text):
     return render_template('home/404.html'), 404
+
+
+@home_bp.route('/a-propos', methods=['GET', 'POST'])
+def apropos():
+    return render_template('home/a-propos.html')
+
 
 
 

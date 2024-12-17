@@ -228,11 +228,13 @@ function addIngredientToList(id_ingredient, nom) {
     })
     .then(data => {
         console.log('Réponse du serveur :', data);
+        window.location.reload(); //recharge la page
     })
     .catch(error => {
         console.error('Erreur :', error);
         btn.style.color = isLiked ? "#bb5202" : "black"; // Rétablir la couleur en cas d'erreur
     });
+  
   }
 
 
