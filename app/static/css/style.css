@@ -142,12 +142,18 @@ z-index: 1;
   }
 
 /*header right*/
-
+.header-nav-right{
+  width: 33%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+}
 .right-acceuil, .right-favoris, .right-creer, .right-compte{
 width: 8.25%;
 display: flex;
 align-items: center;
-justify-content: space-evenly;
 flex-direction: column-reverse;
 font-size: 20px;
 }
@@ -213,6 +219,15 @@ align-items: center;
 }
 
 /*BUTTONS*/
+.btn-deleted{
+  background: transparent;
+  border: none;
+  display: flex;
+  margin-top: 5px;  
+  height: 25px;
+  width: auto;
+  color: #bb5202;
+}
 .btn{
   background: transparent;
   border: none;
@@ -724,16 +739,16 @@ input[type="text"] {
   align-items: center;  /* Alignement vertical centré */
   position: relative;  /* Nécessaire pour utiliser position: absolute sur le titre */
   width: 100%; /* Assurer que le div prend toute la largeur disponible */
-  padding-left: 30px;
-  padding-top: 50px;
-  padding-right: 30px;
-  padding-bottom: 30px;
+  padding-left: 20px;
+  padding-top: 30px;
+  padding-right: 20px;
+  padding-bottom: 5px;
 }
 
 #photo-big{
   border: solid 1px;
-  border-color: #767676;
-  height: 350px;
+  border-color: #bb5202;
+  height: 300px;
   width: 500px;
   border-radius: 20px;
   object-fit: cover;
@@ -754,8 +769,29 @@ input[type="text"] {
 }
 .infos-recette{
   font-weight: normal;
-  margin-left: 30px;
   font-size: 24px;
+}
+.infos-titre::after{
+  content: "";
+  flex: 1 1 0;
+  width: 10px;
+  height: 1px;
+  background-color: #bb5202;
+}
+.infos-logo{
+color: #bb5202;
+}
+
+
+.infos-titre{
+  font-weight: normal;
+  font-size: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 #infos-recette p{
   margin-left: 60px;
@@ -787,6 +823,7 @@ input[type="text"] {
 
 
 #createur{
+  color: #bb5202;
   display: flex;
   align-items: center;
   justify-content: center;

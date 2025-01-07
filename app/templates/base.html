@@ -61,6 +61,7 @@
                     </div>
                 </div>
             </div>
+            <div class="header-nav-right">
                 <div class ="right-acceuil">
                     <a href="{{ url_for('home.landing_page') }}">Accueil</a>
                     <img src="{{url_for('static', filename='imgs/logo-acceuil.png')}}" alt="logo-acceuil" id="logo-right"/>
@@ -78,9 +79,9 @@
                     <a href="{{ url_for('user.show_profile') }}">Compte</a>
                     <img src="{{ url_for('static', filename='imgs/logo-compte.png') }}" alt="logo-compte" id="logo-right" />
                 </div>
-        
             </div>
-        </nav>
+        </div>
+    </nav>
         
     </header>
     <main id="main-content">

@@ -40,16 +40,31 @@
   <img src="{{ url_for('static', filename=recette.chemin_vers_le_fichier) }}" id="photo-big"  alt="{{ recette.titres }}">
 </div><br>
 <div id="infos-recette">
-  <h1 class="infos-recette">Description</h1>
+  <div class="infos-titre">
+    <div class="infos-logo"><i class="fa-solid fa-book"></i></div>
+  Description
+  </div>
   <p>{{recette.description | safe}}</p><br>
-  <h1 class="infos-recette">Liste des ingrédients pour {{recette.nombre_personne}} personnes : </h1>
+
+  <div class="infos-titre">
+    <div class="infos-logo"><i class="fa-solid fa-carrot"></i></div>
+  Ingrédients pour {{recette.nombre_personne}} personnes
+  </div>
+
     {% for ingredient in recette.ingredients %}
         <p><strong>{{ ingredient.ingredient_nom }}:</strong> {{ ingredient.quantite }}</p>
     {% endfor %}
     <br>
+
   <p><strong>Temps de préparation : </strong>{{recette.temps_preparation}}</p>
   <p><strong>Temps de cuisson/repos : </strong>{{recette.temps_cuisson}}</p><br>
-  <h1 class="infos-recette">Suivez ces étapes :</h1>
+
+  <div class="infos-titre">
+    <div class="infos-logo"><i class="fa-solid fa-bars"></i></div>
+    Etapes
+  </div>
+
+
   <p>{{recette.etapes | safe}}</p>
   <h1 class="title">Bonne dégustation {{g.user['prenom']}}!</h1>
 </div><br>

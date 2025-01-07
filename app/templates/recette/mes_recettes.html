@@ -19,10 +19,17 @@
           <a href="{{ url_for('recette.detail_recette', titres=recette.titres) }}">
             <div class="photo">
               <img src="{{ url_for('static', filename=recette.chemin_vers_le_fichier) }}" id="photo-style" alt="{{ recette.titres }}">
+              <div id="titre_coeur">
+                <p>{{recette.titres}} </p>
+              </a>
+            
+              
+              <button id="{{ recette.id_recette }}" onclick="toggleDeleted()" class="btn-deleted">
 
-              <p>{{recette.titres}}</p>
-            </div>
-          </a>
+              <i class="fa-solid fa-circle-minus"></i>
+              </button>
+</div>
+          </div>
           {% else %}
             <p>Aucune recette disponible.</p>
           {% endfor %}
