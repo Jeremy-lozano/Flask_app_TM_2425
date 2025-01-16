@@ -87,9 +87,12 @@
     <main id="main-content">
         <div id="popup-overlay">
             <div class="popup-content">
+              <img src="{{url_for('static', filename='imgs/logo.png')}}" alt="logo"/>
+              <h1 id="titre">Cook & Smile</h1>
               <h2>Connection requise pour liker</h2>
-              <a href="{{ url_for('auth.login') }}" class="popup-link">Se connecter</a>
-              <a href="javascript:void(0)" class="popup-exit" onclick="togglePopup()"> Fermer</a>
+              <a href="{{ url_for('auth.register') }}" class="popup-link2">Créer un compte</a>
+              <a href="{{ url_for('auth.login') }}" class="popup-link1">Se connecter</a>
+              <a href="javascript:void(0)" class="popup-exit" onclick="togglePopup()" style="font-weight: 500;">Fermer</a>
             </div>
           </div>  
         <div class="container-rectangle">

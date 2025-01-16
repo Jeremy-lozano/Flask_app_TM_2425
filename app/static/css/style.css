@@ -828,30 +828,73 @@ color: #bb5202;
   align-items: center;
   justify-content: center;
 }
-
-.popup-content{
-  max-width: 500px;
-  padding: 30px;
-  box-sizing: border-box;
-  background-color: #ededed;
+.popup-content img{
+  height: 50px;
   position: absolute;
-  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  border: solid 1px;
-  border-radius: 10px;
+  transform: translateX(-50%); 
 
 }
-.popup-link{
+.popup-content h1{
+  position: absolute;
+  left: 50%;
+  top: 22%;
+  transform: translateX(-50%); 
+
+}
+.popup-content{
+  width: 40%;
+  height: 50%;
+  padding: 30px;
+  box-sizing: border-box;
+  background-color: white;
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);  
+  border-radius: 5px;
+  
+
+}
+.popup-link a{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup-link2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-decoration: none;
+  font-size: 120%;
   color: white;
-  display: inline-block;
   padding: 5px;
   border-radius: 5px; 
-  background-color: #bb5202;
-  border-color: #767676;
+  height: 12%;
+  width: 65%;
+  background-color: #c2c2c2;
   position: absolute;
-  bottom: 0;
+  bottom: 10%;
+  left: 50%;
+
+  margin-bottom: 10px;
+  transform: translate(-50%);
+
+}
+.popup-link1{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 120%;
+  color: white;
+  padding: 5px;
+  border-radius: 5px; 
+  height: 12%;
+  width: 65%;
+  background-color: #bb5202;
+  position: absolute;
+  bottom: 25%;
   left: 50%;
 
   margin-bottom: 10px;
@@ -859,8 +902,12 @@ color: #bb5202;
 
 }
 #popup-overlay h2{
-  margin-bottom: 20px;
-  margin-top: 20px;
+  position: absolute;
+  top: 37%;
+  right: 50%;
+  font-size: 20px;
+  width: max-content  ;
+  transform: translate(50%);
 }
 #popup-overlay{
   position: fixed;
@@ -875,6 +922,10 @@ color: #bb5202;
   display: block !important;
 
   background: rgba(110, 110, 110, 0.5);
+}
+.popup-exit:hover{
+  color: #bb5202;
+  text-decoration: underline;
 }
 .popup-exit{
   position: absolute;
