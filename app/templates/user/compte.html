@@ -25,8 +25,13 @@
       <h1>Mes recettes</h1>
         
       {% for recette in recettes %}
-
-        <span id="infos">{{recette.titres}}</span>
+      
+        <span id="infos">
+          <a id="lien-recette-profil" href="{{ url_for('recette.detail_recette', titres=recette.titres) }}">
+          {{recette.titres}}
+        </a>
+      </span>
+      
       {%else%}
         <span id="infos">Pas encore de recette</span>
       {% endfor %}
