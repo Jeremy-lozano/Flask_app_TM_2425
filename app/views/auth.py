@@ -54,6 +54,8 @@ def register():
 # Route /auth/login
 @auth_bp.route('/login', methods=('GET', 'POST'))
 def login():
+    
+
     # Si des données de formulaire sont envoyées vers la route /login (ce qui est le cas lorsque le formulaire de login est envoyé)
     if request.method == 'POST':
 

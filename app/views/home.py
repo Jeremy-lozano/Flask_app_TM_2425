@@ -9,6 +9,7 @@ home_bp = Blueprint('home', __name__)
 # Route /
 @home_bp.route('/', methods=['GET', 'POST'])
 def landing_page():
+
     user_id = session.get('user_id')
         
     if request.method == "POST":
@@ -56,7 +57,6 @@ def landing_page():
             'chemin_vers_le_fichier': chemin_relatif,
             'is_liked': is_liked
         })
-    print("User ID:", user_id)
 
     db.close()
     return render_template('home/index.html', link=url_for('user.show_profile'), recettes=recettes_traitees)

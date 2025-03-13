@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, session
 from app.utils import *
 
 # Importation des blueprints de l'application
@@ -12,6 +12,7 @@ from app.views.recette import recette_bp
 # Fonction automatiquement appelée par le framework Flask lors de l'exécution de la commande python -m flask run permettant de lancer le projet
 # La fonction retourne une instance de l'application créée
 def create_app():
+    
 
     # Crée l'application Flask
     app = Flask(__name__)
