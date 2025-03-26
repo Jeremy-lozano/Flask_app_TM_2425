@@ -3,7 +3,7 @@ from flask import (Blueprint, flash, g, jsonify, redirect, render_template, requ
 from app.db import db
 from app.db.db import get_db, close_db
 from app.utils import *
-import os
+import os, unicodedata
 from app.utils import upload_and_get_path
 
 # Routes /user/...
@@ -64,21 +64,7 @@ def creation():
 
         # On récupère la base de données
         db = get_db()
-
-        print("Données du formulaire :", {
-            "id_utilisateur": id_utilisateur,
-            "titres": titres,
-            "nom_categorie": nom_categorie,
-            "description": description,
-            "nombre_personne": nombre_personne,
-            "temps_preparation": temps_preparation,
-            "temps_cuisson": temps_cuisson,
-            "etapes": etapes,
-            "difficulte": difficulte,
-            "id_ingredients": id_ingredients,
-            "quantites": quantites,
-            "file": file
-        })  # Log des données reçues
+    
 
         # Vérifier que tous les champs nécessaires sont remplis
         if id_utilisateur and titres and description and nombre_personne and temps_preparation and temps_cuisson and etapes and difficulte:
@@ -141,18 +127,23 @@ def validation():
 
 @recette_bp.route('/suggestions', methods=['GET'])
 def suggestions():
-    query = request.args.get('q', '').strip()  # Récupère la requête et supprime les espaces inutiles
+    
+    query = request.args.get('q', '').strip().lower()  # Récupère la requête et supprime les espaces inutiles
     if query:
         db = get_db()
         cursor = db.cursor()
-        # Modifier la requête pour rechercher uniquement les noms qui commencent par les lettres saisies
-        cursor.execute("SELECT id_ingredient, nom FROM ingredients WHERE nom LIKE ?", (query + '%',))
+        # Utilisation de LIKE avec un mot-clé qui commence par la chaîne saisie
+        cursor.execute("SELECT id_recette, nom_recette FROM recettes WHERE LOWER(nom_recette) LIKE ?", (query + '%',))
         results = cursor.fetchall()
         db.close()
+        
         # Convertir les résultats en une liste de dictionnaires
-        suggestions = [{'id_ingredient': row['id_ingredient'], 'nom': row['nom']} for row in results]
+        suggestions = [{'id_recette': row['id_recette'], 'nom_recette': row['nom_recette']} for row in results]
+        
         return jsonify(suggestions)
-    return jsonify([])  # Retourne une liste vide si aucune requête n'est fournie
+    else:
+        return jsonify([])  # Si aucune requête n'est fournie, renvoyer une liste vide
+
 
 
 @recette_bp.route('/aperitifs', methods=['GET', 'POST'])
@@ -528,7 +519,7 @@ def resultat(recherche):
         FROM recettes r
         LEFT JOIN photo_recette p ON r.id_recette = p.id_recette
         WHERE r.titres LIKE ?
-    ''', (f'%{recherche}%',))  # Utilisation de LIKE pour rechercher dans le titre
+    ''', (f'{recherche}%',))  # Utilisation de LIKE pour rechercher dans le titre
     recettes = cursor.fetchall()
     
     
