@@ -479,7 +479,7 @@ def detail_recette(titres):
             'temps_cuisson': recette[0]['temps_cuisson'],
             'etapes': recette[0]['etapes'],
             'difficulte': recette[0]['difficulte'],
-            'chemin_vers_le_fichier': recette[0]['chemin_vers_le_fichier'],
+            'chemin_vers_le_fichier': chemin_relatif,
             'username': recette[0]['username'],   # Ajouter le username de l'utilisateur
             'ingredients': [],            
         }
