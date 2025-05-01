@@ -469,6 +469,14 @@ def detail_recette(titres):
 
     # Vérifier si des résultats ont été trouvés
     if recette:
+        if recette[0]['chemin_vers_le_fichier']:
+            chemin_complet = recette[0]['chemin_vers_le_fichier']
+            chemin_normalisee = chemin_complet.replace("\\", "/")
+
+            nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
+
+            # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+            chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
         # Initialisation des variables pour la recette et les ingrédients
         recette_data = {
             'id_recette': recette[0]['id_recette'],
@@ -485,21 +493,14 @@ def detail_recette(titres):
         }
 
         # Extraire le chemin relatif de l'image si elle existe
-        if recette[0]['chemin_vers_le_fichier']:
-            chemin_complet = recette[0]['chemin_vers_le_fichier']
-            chemin_normalisee = chemin_complet.replace("\\", "/")
-
-            nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
-
-            # Convertir le chemin complet en un chemin relatif à partir de 'static/'
-            chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
+        
 
             # Extraire tous les ingrédients associés à la recette
         for row in recette:
             if row['ingredient_nom']:
                 recette_data['ingredients'].append({
                     'ingredient_nom': row['ingredient_nom'],
-                    'quantite': row['quantite']
+                    'quantite': row['quantite'],
                 })
 
         # Passer les données de la recette et des ingrédients au template
