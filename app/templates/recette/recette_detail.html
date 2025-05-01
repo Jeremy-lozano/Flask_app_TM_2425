@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}
-  Template de base
-{% endblock %}
+
 
 {% block content%}
 
@@ -19,6 +17,7 @@
 
 
 <div id="top">
+  <div>
   {% if recette.difficulte == "facile" %}
     <img src="{{url_for('static', filename='imgs/facile.png')}}" alt="facile" id="difficulte">
   {% elif recette.difficulte == "intermediaire" %}
@@ -28,6 +27,7 @@
   {% else %}
     <p>Difficulté inconnue.</p>
   {% endif %}
+ </div>
   <h1 class="title">{{recette.titres }}</h1>
   <button style="visibility: hidden;">
   <i class="fa-regular fa-heart" style="visibility: hidden;"></i>

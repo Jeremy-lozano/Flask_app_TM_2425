@@ -219,7 +219,8 @@ align-items: center;
 }
 
 /*BUTTONS*/
-.btn-deleted{
+
+.btn-modified{
   background: transparent;
   border: none;
   display: flex;
@@ -227,6 +228,7 @@ align-items: center;
   height: 25px;
   width: auto;
   color: #bb5202;
+
 }
 .btn{
   background: transparent;
@@ -306,7 +308,8 @@ border-bottom-right-radius: 5px;
   border-radius: 5px;
   background-color: #bb5202;
   color: white;
-  padding: 10px;
+  padd
+  : 10px;
   margin-top: 10px;
 }
 
@@ -375,6 +378,8 @@ border-bottom-right-radius: 5px;
   z-index: 10;
 }
 #container-create{
+  margin-left: 20px;
+  margin-right: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -426,7 +431,7 @@ border-bottom-right-radius: 5px;
   left: 50%; 
   transform: translateX(25); 
   margin-top: 50px;
-  flex-wrap: wrap;
+
   display: flex;
   justify-content: center;
   align-items:center ;
@@ -736,9 +741,11 @@ input[type="text"] {
 #top {
   display: flex;
   justify-content: space-between; /* Espace entre les éléments */
+  flex-wrap: wrap;
   align-items: center;  /* Alignement vertical centré */
   position: relative;  /* Nécessaire pour utiliser position: absolute sur le titre */
   width: 100%; /* Assurer que le div prend toute la largeur disponible */
+
   padding-left: 20px;
   padding-top: 30px;
   padding-right: 20px;
@@ -804,6 +811,8 @@ color: #bb5202;
 #difficulte{
   width: 90px;
   height: auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 
@@ -946,4 +955,19 @@ color: #bb5202;
 #lien-recette-profil{
   text-decoration: none;
   color: #000000;
+}
+
+
+.space-modified{
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; 
+}
+
+#editor-description{
+  width: 500px;
+}
+#editor-etapes{
+  width: 500px;
 }

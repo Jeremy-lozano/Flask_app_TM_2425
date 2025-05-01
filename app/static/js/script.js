@@ -174,7 +174,7 @@ function addIngredientToList(id_ingredient, nom) {
   // Créer un élément d'ingrédient avec un champ pour la quantité
   const ingredientElement = `
     <div class="ingredient-item" data-id_ingredient="${id_ingredient}">
-      <span>${nom}</span>
+      <span >${nom}</span>
       <input type="text" class="quantity-input" name="quantite[]" placeholder="Quantité">
       <input type="hidden" name="id_ingredient[]" value="${id_ingredient}">
     </div>
@@ -253,11 +253,20 @@ const quill_etapes = new Quill('#editor-etapes', {
   theme: 'snow',
   placeholder: 'Expliquez vos étapes de préparation'
 });
+document.querySelector('form').onsubmit = function() {
+  document.getElementById('content_etapes').value = quill_etapes.root.innerHTML;
+};
+
 
 const quill_description = new Quill('#editor-description', {
   theme: 'snow',
   placeholder: 'Racontez nous !'
 });
+
+document.querySelector('form').onsubmit = function() {
+  document.getElementById('content_description').value = quill_description.root.innerHTML;
+};
+
 
 // Attach event listener to the form
 document.getElementById('dynamicForm').addEventListener('submit', function (event) {
@@ -269,3 +278,15 @@ document.getElementById('dynamicForm').addEventListener('submit', function (even
   document.getElementById('content_etapes').value = content_etapes;
   document.getElementById('content_description').value = content_description;
 });
+
+function modifierFormulaire(){
+  
+}
+
+function supprimerIngredient(element) {
+  // Trouver le div parent de l'élément (le span dans ce cas)
+  var div = element.closest('.ingredient-item');
+  
+  // Supprimer le div de l'interface
+  div.remove();
+}

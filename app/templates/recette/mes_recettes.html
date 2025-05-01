@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}
-  Template de base
-{% endblock %}
+
 
 {% block content%}
         <div>
@@ -24,11 +22,12 @@
                 
               </a>
             
-              
-              <button id="{{ recette.id_recette }}" onclick="toggleDeleted()" class="btn-deleted">
-
+              <a href="{{ url_for('recette.modifier', id_recette=recette['id_recette']) }}">
+              <button id="{{ recette.id_recette }}" class="btn-modified">
+          
               <i class="fa-solid fa-circle-minus"></i>
               </button>
+              </a>
 </div>
           </div>
           {% else %}

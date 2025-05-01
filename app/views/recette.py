@@ -6,6 +6,7 @@ from app.utils import *
 import os, unicodedata
 from app.utils import upload_and_get_path
 
+db.row_factory = sqlite3.Row
 # Routes /user/...
 recette_bp = Blueprint('recette', __name__, url_prefix='/recette')
 
@@ -16,7 +17,7 @@ def show_recettes():
     db = get_db()
 
     # Requête pour récupérer les titres des recettes et les chemins des photos
-    cursor = db.execute('SELECT r.titres, p.chemin_vers_le_fichier '
+    cursor = db.execute('SELECT r.titres, r.id_recette, p.chemin_vers_le_fichier '
                         'FROM recettes r '
                         'JOIN photo_recette p ON r.id_recette = p.id_recette '
                         'WHERE id_utilisateur = ?', (user_id,))
@@ -35,6 +36,7 @@ def show_recettes():
 
         # Ajouter à la liste des recettes traitées
         recettes_traitees.append({
+            'id_recette': recette['id_recette'],
             'titres': recette['titres'],
             'chemin_vers_le_fichier': chemin_relatif
         })
@@ -124,6 +126,12 @@ def creation():
 def validation():
 
     return render_template('recette/validation.html')
+
+@recette_bp.route('/validation-modification', methods=['GET', 'POST'])
+@login_required
+def validation_modification():
+
+    return render_template('recette/validation_modification.html')
 
 @recette_bp.route('/suggestions', methods=['GET'])
 def suggestions():
@@ -605,6 +613,7 @@ def show_favoris():
 @recette_bp.route('/like', methods=('GET', 'POST'))
 @login_required
 def like():
+
     data = request.get_json()
     id_utilisateur = data.get('id_utilisateur')
     id_recette = data.get('id_recette')
@@ -644,3 +653,104 @@ def like():
     except sqlite3.Error as e:
         print("Erreur SQLite :", e)
         return jsonify({'error': 'Erreur serveur'}), 500
+    
+@recette_bp.route('/modifier/<int:id_recette>', methods=('GET', 'POST'))
+def modifier(id_recette):
+    db = get_db()
+
+    if request.method == 'POST':
+        print("🔧 [DEBUG] Début du POST /modifier")
+
+        titres = request.form.get('titres')
+        nom_categorie = request.form.get('nom_categorie')
+        description = request.form.get('description')
+        nombre_personne = request.form.get('nombre_personne')
+        temps_preparation = request.form.get('temps_preparation')
+        temps_cuisson = request.form.get('temps_cuisson')
+        etapes = request.form.get('etapes')
+        difficulte = request.form.get('difficulte')
+        id_utilisateur = session.get('user_id')
+        file = request.files.get('file')
+
+        id_ingredients = request.form.getlist('id_ingredient[]')
+        quantites = request.form.getlist('quantite[]')
+
+        print(f"✅ Données reçues :\n- titres: {titres}\n- categorie: {nom_categorie}\n- description: {description[:30]}\n- etapes: {etapes[:30]}\n- utilisateur: {id_utilisateur}")
+        print(f"🧂 Ingrédients: {id_ingredients}")
+        print(f"🥄 Quantités: {quantites}")
+
+        if id_utilisateur and titres and description and nombre_personne and temps_preparation and temps_cuisson and etapes and difficulte:
+            try:
+                print("🔍 Recherche de la catégorie...")
+                cursor = db.execute("SELECT id_categorie FROM categories WHERE nom_categorie = ?", (nom_categorie,))
+                result = cursor.fetchone()
+
+                if result:
+                    id_categorie = result[0]
+                    print(f"✅ Catégorie trouvée : id {id_categorie}")
+
+                    db.execute("""
+                        UPDATE recettes
+                        SET id_utilisateur = ?, titres = ?, id_categorie = ?, description = ?, nombre_personne = ?, 
+                            temps_preparation = ?, temps_cuisson = ?, etapes = ?, difficulte = ?
+                        WHERE id_recette = ?
+                    """, (id_utilisateur, titres, id_categorie, description, nombre_personne,
+                          temps_preparation, temps_cuisson, etapes, difficulte, id_recette))
+                    print("✅ Recette mise à jour")
+
+                    print("🧼 Suppression des anciens ingrédients...")
+                    db.execute("DELETE FROM utilise WHERE id_recette = ?", (id_recette,))
+
+                    for id_ingredient, quantite in zip(id_ingredients, quantites):
+                        if id_ingredient and quantite:
+                            print(f"➕ Ingrédient : {id_ingredient}, Quantité : {quantite}")
+                            db.execute("INSERT INTO utilise (id_recette, id_ingredient, quantite) VALUES (?, ?, ?)",
+                                       (id_recette, id_ingredient, quantite))
+
+                    if file and file.filename != '':
+                        print("📷 Fichier image reçu, traitement...")
+                        chemin_vers_le_fichier = upload_and_get_path(file)
+                        db.execute("INSERT INTO photo_recette (id_recette, chemin_vers_le_fichier) VALUES (?, ?)",
+                                   (id_recette, chemin_vers_le_fichier))
+                        print(f"✅ Image enregistrée : {chemin_vers_le_fichier}")
+
+                    db.commit()
+                    print("🎉 Modification terminée, redirection")
+                    flash('Recette modifiée avec succès !')
+                    return redirect(url_for('recette.validation_modification'))
+                else:
+                    print("❌ Catégorie non trouvée")
+                    flash("Catégorie introuvable.")
+                    return redirect(url_for('recette.modifier', id_recette=id_recette))
+
+            except Exception as e:
+                db.rollback()
+                print(f"❌ Erreur lors de la mise à jour : {e}")
+                flash(f"Erreur lors de la modification : {str(e)}")
+                return redirect(url_for('recette.modifier', id_recette=id_recette))
+
+        else:
+            print("❌ Champs requis manquants")
+            flash("Veuillez remplir tous les champs obligatoires.")
+            return redirect(url_for('recette.modifier', id_recette=id_recette))
+
+    else:
+        print("📥 GET /modifier — Chargement du formulaire")
+        recette = db.execute("""
+            SELECT *
+            FROM recettes
+            JOIN photo_recette USING(id_recette)
+            WHERE id_recette = ?
+        """, (id_recette,)).fetchone()
+
+        ingredients = db.execute("""
+            SELECT *
+            FROM utilise u
+            JOIN ingredients i ON u.id_ingredient = i.id_ingredient
+            WHERE u.id_recette = ?
+        """, (id_recette,)).fetchall()
+
+        categories = db.execute("SELECT * FROM categories").fetchall()
+
+        print("✅ Formulaire de modification chargé")
+        return render_template('recette/modification_recette.html', recette=recette, ingredients=ingredients, categories=categories)
