@@ -32,7 +32,7 @@ def show_recettes():
         nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
 
         # Convertir le chemin en utilisant des barres obliques normales (i.e. '/')
-        chemin_relatif = os.path.normpath(os.path.join('imgs', 'photo_recette', nom_fichier)).replace(os.sep, '/')
+        chemin_relatif = os.path.normpath(os.path.join(nom_fichier)).replace(os.sep, '/')
 
         # Ajouter à la liste des recettes traitées
         recettes_traitees.append({
