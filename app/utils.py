@@ -29,7 +29,7 @@ def allowed_file(filename):
     allowed_extensions = {'png', 'jpg', 'jpeg'}
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
 
-UPLOAD_FOLDER = os.path.join('app', 'static', 'imgs', 'photo_recette')
+UPLOAD_FOLDER = os.path.join('app', 'static')
 
 def upload_and_get_path(file):
     # Vérifier si le dossier existe, sinon le créer
