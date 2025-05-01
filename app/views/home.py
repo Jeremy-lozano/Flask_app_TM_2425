@@ -32,13 +32,19 @@ def landing_page():
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+        chemin_normalisee = chemin_complet.replace("\\", "/")
+
+        nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
 
         # Convertir le chemin complet en un chemin relatif à partir de 'static/'
         chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
 
+
+
         # Remplacer les barres obliques inverses par des barres obliques normales
         chemin_relatif = chemin_relatif.replace("\\", "/")
+
+
         if user_id:
             cursor_like = db.execute('''
                 SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
