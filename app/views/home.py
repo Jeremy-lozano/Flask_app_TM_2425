@@ -41,8 +41,7 @@ def landing_page():
 
 
 
-        # Remplacer les barres obliques inverses par des barres obliques normales
-        chemin_relatif = chemin_relatif.replace("\\", "/")
+    
 
 
         if user_id:

@@ -29,10 +29,12 @@ def show_recettes():
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+        chemin_normalisee = chemin_complet.replace("\\", "/")
 
-        # Convertir le chemin en utilisant des barres obliques normales (i.e. '/')
-        chemin_relatif = os.path.normpath(os.path.join(nom_fichier)).replace(os.sep, '/')
+        nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
+
+        # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+        chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
 
         # Ajouter à la liste des recettes traitées
         recettes_traitees.append({
@@ -172,13 +174,12 @@ def show_aperitifs():
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+        chemin_normalisee = chemin_complet.replace("\\", "/")
+
+        nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
 
         # Convertir le chemin complet en un chemin relatif à partir de 'static/'
         chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
-
-        # Remplacer les barres obliques inverses par des barres obliques normales
-        chemin_relatif = chemin_relatif.replace("\\", "/")
         if user_id:
             cursor_like = db.execute('''
                 SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
@@ -222,13 +223,12 @@ def show_entrees():
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+        chemin_normalisee = chemin_complet.replace("\\", "/")
+
+        nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
 
         # Convertir le chemin complet en un chemin relatif à partir de 'static/'
         chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
-
-        # Remplacer les barres obliques inverses par des barres obliques normales
-        chemin_relatif = chemin_relatif.replace("\\", "/")
         if user_id:
             cursor_like = db.execute('''
                 SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
@@ -271,13 +271,12 @@ def show_plats():
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+        chemin_normalisee = chemin_complet.replace("\\", "/")
+
+        nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
 
         # Convertir le chemin complet en un chemin relatif à partir de 'static/'
         chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
-
-        # Remplacer les barres obliques inverses par des barres obliques normales
-        chemin_relatif = chemin_relatif.replace("\\", "/")
         if user_id:
             cursor_like = db.execute('''
                 SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
@@ -321,13 +320,12 @@ def show_desserts():
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+        chemin_normalisee = chemin_complet.replace("\\", "/")
+
+        nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
 
         # Convertir le chemin complet en un chemin relatif à partir de 'static/'
         chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
-
-        # Remplacer les barres obliques inverses par des barres obliques normales
-        chemin_relatif = chemin_relatif.replace("\\", "/")
         if user_id:
             cursor_like = db.execute('''
                 SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
@@ -371,13 +369,12 @@ def show_smoothies():
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+        chemin_normalisee = chemin_complet.replace("\\", "/")
+
+        nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
 
         # Convertir le chemin complet en un chemin relatif à partir de 'static/'
         chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
-
-        # Remplacer les barres obliques inverses par des barres obliques normales
-        chemin_relatif = chemin_relatif.replace("\\", "/")
         if user_id:
             cursor_like = db.execute('''
                 SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
@@ -420,13 +417,12 @@ def show_boissons():
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+        chemin_normalisee = chemin_complet.replace("\\", "/")
+
+        nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
 
         # Convertir le chemin complet en un chemin relatif à partir de 'static/'
         chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
-
-        # Remplacer les barres obliques inverses par des barres obliques normales
-        chemin_relatif = chemin_relatif.replace("\\", "/")
         if user_id:
             cursor_like = db.execute('''
                 SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
@@ -533,11 +529,15 @@ def resultat(recherche):
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
         if chemin_complet:  # Vérifier si le chemin est défini
-            nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+            
+        
+            chemin_normalisee = chemin_complet.replace("\\", "/")
+
+            nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
+
             # Convertir le chemin complet en un chemin relatif à partir de 'static/'
             chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
-            # Remplacer les barres obliques inverses par des barres obliques normales
-            chemin_relatif = chemin_relatif.replace("\\", "/")
+            
         else:
             chemin_relatif = None  # Pas de chemin d'image disponible
         if user_id:
@@ -582,13 +582,12 @@ def show_favoris():
     recettes_traitees = []
     for recette in recettes:
         chemin_complet = recette['chemin_vers_le_fichier']
-        nom_fichier = os.path.basename(chemin_complet)  # Extraire le nom du fichier
+        chemin_normalisee = chemin_complet.replace("\\", "/")
+
+        nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
 
         # Convertir le chemin complet en un chemin relatif à partir de 'static/'
         chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
-
-        # Remplacer les barres obliques inverses par des barres obliques normales
-        chemin_relatif = chemin_relatif.replace("\\", "/")
         if user_id:
             cursor_like = db.execute('''
                 SELECT 1 FROM aimer WHERE id_utilisateur = ? AND id_recette = ?
