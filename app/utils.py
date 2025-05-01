@@ -41,7 +41,7 @@ def upload_and_get_path(file):
     file.save(file_path)
 
     # Retourner un chemin relatif à 'static', comme Flask s'y attend
-    return os.path.join('imgs', 'photo_recette', filename)
+    return os.path.join(filename)
 
 
 
