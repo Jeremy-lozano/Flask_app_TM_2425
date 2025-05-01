@@ -479,19 +479,22 @@ def detail_recette(titres):
             'temps_cuisson': recette[0]['temps_cuisson'],
             'etapes': recette[0]['etapes'],
             'difficulte': recette[0]['difficulte'],
-            'chemin_vers_le_fichier': None,
+            'chemin_vers_le_fichier': recette[0]['chemin_vers_le_fichier'],
             'username': recette[0]['username'],   # Ajouter le username de l'utilisateur
             'ingredients': [],            
         }
 
         # Extraire le chemin relatif de l'image si elle existe
         if recette[0]['chemin_vers_le_fichier']:
-            # Extraction du nom du fichier
-            nom_fichier = os.path.basename(recette[0]['chemin_vers_le_fichier'])
-            # Créer le chemin relatif à 'static'
-            recette_data['chemin_vers_le_fichier'] = os.path.join('imgs', 'photo_recette', nom_fichier).replace(os.sep, '/')
+            chemin_complet = recette[0]['chemin_vers_le_fichier']
+            chemin_normalisee = chemin_complet.replace("\\", "/")
 
-        # Extraire tous les ingrédients associés à la recette
+            nom_fichier = os.path.basename(chemin_normalisee)  # Extraire le nom du fichier
+
+            # Convertir le chemin complet en un chemin relatif à partir de 'static/'
+            chemin_relatif = os.path.join('imgs', 'photo_recette', nom_fichier)
+
+            # Extraire tous les ingrédients associés à la recette
         for row in recette:
             if row['ingredient_nom']:
                 recette_data['ingredients'].append({
